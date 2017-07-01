@@ -7,4 +7,5 @@ function index(req, res) {
     res.send({data: "This is from the server!"});
 }
 
+
 module.exports = router;
