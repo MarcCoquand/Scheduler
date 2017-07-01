@@ -1,21 +1,23 @@
-var	gulp           = require('gulp'),
-nodemon        = require('gulp-nodemon'),
-concat         = require('gulp-concat'),
-pug            = require('gulp-pug'),
-browserSync    = require('browser-sync').create(),
-sourcemaps     = require('gulp-sourcemaps'),
-sass           = require('gulp-sass'),
-elm            = require('gulp-elm'),
+var	gulp          = require('gulp'),
+nodemon           = require('gulp-nodemon'),
+concat            = require('gulp-concat'),
+pug               = require('gulp-pug'),
+browserSync       = require('browser-sync').create(),
+sourcemaps        = require('gulp-sourcemaps'),
+sass              = require('gulp-sass'),
+elm               = require('gulp-elm'),
 // production tools
 // minimist       = require('minimist'),
-runSequence    = require('run-sequence'),
-gulpif         = require('gulp-if'),
-cleanCss	   = require('gulp-clean-css'),      // use gulp-cssnano instead
-uglify         = require('gulp-uglify');
+runSequence       = require('run-sequence'),
+gulpif            = require('gulp-if'),
+cleanCss          = require('gulp-clean-css'),      // use gulp-cssnano instead
+uglify            = require('gulp-uglify');
+var child_process = require('child_process');
 
 var paths = {
 	dist    : "dist",
 	server  : 'server',
+	mongodb : 'server/data',
 	pug     : ['src/index.pug'],
 	copy    : ['src/index.html', 'src/**/*.js'],
 	scss    : ['src/**/*.{scss, sass}'],
@@ -112,6 +114,17 @@ gulp.task('elm-compile-production', ['elm-init'], function() {
 })
 
 /*
+ * MONGODB
+ */
+gulp.task('mongodb-init', function() {
+  child_process.exec('mongod --dbpath=server/data --port 27017', 
+    function(err,stdout,stderr) {
+      console.log(stdout)
+    }
+  );
+});
+
+/*
 * D E V E L O P M E N T
 */
 
@@ -165,7 +178,7 @@ gulp.task('build', ['del'], function() {
 	runSequence('compilation', 'elm-compile');
 });
 
-gulp.task('default', ['compilation', 'elm-compile', 'watch-server']);
+gulp.task('default', ['compilation', 'elm-compile', 'mongodb-init', 'watch-server']);
 
 gulp.task('serverless', ['compilation', 'elm-compile', 'watch']);
 
