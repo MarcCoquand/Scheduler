@@ -4,6 +4,7 @@ import Html exposing (..)
 import Html.Attributes exposing (href)
 import Http
 import Json.Decode as Json
+import OAuth exposing (..)
 
 
 -- MODEL
@@ -12,12 +13,13 @@ import Json.Decode as Json
 type alias Model =
     { message : String
     , working : Bool
+    , user    : Maybe Client
     }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model "Loading..." False
+    ( Model "Loading..." False Nothing
     , loadData
     )
 
@@ -28,26 +30,33 @@ init =
 
 type Msg
     = FetchResponse (Result Http.Error String)
+    | LogIn Client
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         FetchResponse (Result.Ok str) ->
-            Model str True ! []
+            Model str True Nothing ! []
 
         FetchResponse (Result.Err (Http.BadStatus err)) ->
             if err.status.code == 404 then
-                Model message404 True ! []
+                Model message404 True Nothing ! []
             else
-                Model (toString err) False ! []
+                Model (toString err) False Nothing ! []
 
         FetchResponse (Result.Err err) ->
-            Model (toString err) False ! []
+            Model (toString err) False Nothing ! []
+
+        LogIn client -> 
+          ( {model | user = Just client}
+          , Cmd.none
+          )
+          
 
 
 message404 =
-    "I got a 404. This is the correct response if you ran serverless. Otherwise you need to check your configuration"
+    "I got a 404."
 
 
 
@@ -57,14 +66,11 @@ message404 =
 view : Model -> Html Msg
 view { message, working } =
     div []
-        [ h1 [] [ text "Elm-fullstack by Simon Hampton" ]
+        [ h1 [] [ text "Quick meeting scheduler!" ]
         , p [] [ text message ]
         , if working then
             div []
-                [ text "At this stage, many people head over to "
-                , a [ href "https://github.com/simonh1000/elm-fullstack-starter" ]
-                    [ text "Github" ]
-                , text " to star this repo!"
+                [ text "I've loaded ! "
                 ]
           else
             text ""
