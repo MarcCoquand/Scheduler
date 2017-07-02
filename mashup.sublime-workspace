@@ -1,0 +1,1074 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"cal",
+				"calendarCmd"
+			],
+			[
+				"load",
+				"loadData"
+			],
+			[
+				"g",
+				"googleAuthClient"
+			],
+			[
+				"token",
+				"tokenFromHash"
+			],
+			[
+				"mess",
+				"message404"
+			],
+			[
+				"googl",
+				"googleAuthClient"
+			],
+			[
+				"child",
+				"childStyle"
+			],
+			[
+				"chil",
+				"childStyle"
+			],
+			[
+				"At",
+				"Attributes"
+			],
+			[
+				"s",
+				"style"
+			],
+			[
+				"re",
+				"reverse"
+			],
+			[
+				"di",
+				"divideStyle"
+			],
+			[
+				"get",
+				"getLast"
+			],
+			[
+				"in",
+				"interrupt"
+			],
+			[
+				"Pr",
+				"ProjectCell"
+			],
+			[
+				"Project",
+				"ProjectCell"
+			],
+			[
+				"getAni",
+				"getAnimation"
+			],
+			[
+				"l",
+				"location"
+			],
+			[
+				"con",
+				"convertToCell"
+			],
+			[
+				"Proj",
+				"Project"
+			],
+			[
+				"just",
+				"justify-content"
+			],
+			[
+				"switch",
+				"switchToDetailed"
+			],
+			[
+				"render",
+				"renderProject"
+			],
+			[
+				"curre",
+				"currentRoute"
+			],
+			[
+				"curren",
+				"currentLocation"
+			],
+			[
+				"curr",
+				"currentRoute"
+			],
+			[
+				"par",
+				"parsedRoute"
+			],
+			[
+				"cu",
+				"currentRoute"
+			],
+			[
+				"MyP",
+				"myProfile"
+			],
+			[
+				"cur",
+				"currentRoute"
+			],
+			[
+				"nav",
+				"nav-button"
+			],
+			[
+				"route",
+				"routeString"
+			],
+			[
+				"L",
+				"Location"
+			],
+			[
+				"padding",
+				"padding"
+			],
+			[
+				"my",
+				"myProjects"
+			],
+			[
+				"Hiki",
+				"Hikokimori"
+			],
+			[
+				"bor",
+				"border-box"
+			],
+			[
+				"box",
+				"box-sizing"
+			],
+			[
+				"pro",
+				"ProjectView"
+			],
+			[
+				"N",
+				"Navigation"
+			],
+			[
+				"eee",
+				"experience"
+			],
+			[
+				"spo",
+				"sportswik"
+			],
+			[
+				"font-",
+				"font-size"
+			],
+			[
+				"paddin",
+				"padding-top"
+			],
+			[
+				"margin-",
+				"margin-top"
+			],
+			[
+				"fon",
+				"font-weight"
+			],
+			[
+				"dr",
+				"drawProjectText"
+			],
+			[
+				"draw",
+				"drawProject"
+			],
+			[
+				"init",
+				"initStyleProperties"
+			],
+			[
+				"ini",
+				"initStyleProperties"
+			],
+			[
+				"ex",
+				"expandedMainText"
+			],
+			[
+				"gone",
+				"goneMainText"
+			],
+			[
+				"pa",
+				"padding-right"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"Ani",
+				"Animation"
+			],
+			[
+				"sta",
+				"state"
+			],
+			[
+				"vie",
+				"ViewState"
+			],
+			[
+				"main",
+				"mainText"
+			],
+			[
+				"start",
+				"startStyle"
+			],
+			[
+				"A",
+				"Animation"
+			],
+			[
+				"st",
+				"style"
+			],
+			[
+				"Anim",
+				"Animation"
+			],
+			[
+				"over",
+				"overflow-y"
+			],
+			[
+				"fa",
+				"faces"
+			],
+			[
+				"Proje",
+				"ProjectView"
+			],
+			[
+				"Pro",
+				"Project"
+			],
+			[
+				"voice",
+				"voiceLoader"
+			],
+			[
+				"ch",
+				"childText"
+			],
+			[
+				"p",
+				"projectText"
+			],
+			[
+				"pr",
+				"projectEmpty"
+			],
+			[
+				"emp",
+				"projectEmpty"
+			],
+			[
+				"chi",
+				"children"
+			],
+			[
+				"P",
+				"Project"
+			],
+			[
+				"fol",
+				"folderName"
+			],
+			[
+				"fac",
+				"facesChildren"
+			],
+			[
+				"c",
+				"children"
+			],
+			[
+				"Cel",
+				"CellMode"
+			],
+			[
+				"co",
+				"cover"
+			],
+			[
+				"fo",
+				"formatToProjectText"
+			],
+			[
+				"loa",
+				"loadImage"
+			],
+			[
+				"form",
+				"formatToProjectImage"
+			],
+			[
+				"Emp",
+				"emptyCell"
+			],
+			[
+				"def",
+				"defImage2"
+			],
+			[
+				"fle",
+				"flex-start"
+			],
+			[
+				"ov",
+				"overflow-y"
+			],
+			[
+				"fold",
+				"folderName"
+			],
+			[
+				"ima",
+				"imageName"
+			],
+			[
+				"im",
+				"imageNames"
+			],
+			[
+				"hik",
+				"hikiImages"
+			],
+			[
+				"Ar",
+				"Array2D"
+			],
+			[
+				"wi",
+				"withDefault"
+			],
+			[
+				"from",
+				"fromList"
+			],
+			[
+				"res",
+				"restCoor"
+			],
+			[
+				"se",
+				"second"
+			],
+			[
+				"inde",
+				"indices"
+			],
+			[
+				"ind",
+				"indices"
+			],
+			[
+				"FROM",
+				"fromList"
+			],
+			[
+				"coor",
+				"coordinates"
+			],
+			[
+				"how",
+				"howManyLeft"
+			],
+			[
+				"ge",
+				"get"
+			],
+			[
+				"Array",
+				"Array2D"
+			],
+			[
+				"img",
+				"imgName"
+			],
+			[
+				"row",
+				"row"
+			],
+			[
+				"ro",
+				"rowIndex"
+			],
+			[
+				"to",
+				"toDoubleIndexList"
+			],
+			[
+				"swi",
+				"switchIndex"
+			],
+			[
+				"map",
+				"mapWidthIndex"
+			],
+			[
+				"mod",
+				"model"
+			],
+			[
+				"pla",
+				"playerInfo"
+			],
+			[
+				"div",
+				"divString"
+			],
+			[
+				"i",
+				"isAsked"
+			],
+			[
+				"ma",
+				"margin"
+			],
+			[
+				"spa",
+				"space-between"
+			],
+			[
+				"found",
+				"foundMarkId"
+			],
+			[
+				"mark",
+				"markedId"
+			],
+			[
+				"mar",
+				"marked"
+			],
+			[
+				"r",
+				"remove"
+			],
+			[
+				"is",
+				"isVisible"
+			],
+			[
+				"cla",
+				"classList"
+			],
+			[
+				"t",
+				"translate()"
+			],
+			[
+				"flex",
+				"inline-flex"
+			],
+			[
+				"cl",
+				"classList"
+			],
+			[
+				"sc",
+				"screen"
+			],
+			[
+				"tr",
+				"translateX()"
+			],
+			[
+				"box-s",
+				"box-sizing"
+			],
+			[
+				"bo",
+				"border-color"
+			],
+			[
+				"border-r",
+				"border-radius"
+			],
+			[
+				"pars",
+				"parseQuestion"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/Main.elm",
+			"settings":
+			{
+				"buffer_size": 343,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/App.elm",
+			"settings":
+			{
+				"buffer_size": 2967,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/Calendar.elm",
+			"settings":
+			{
+				"buffer_size": 2043,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/CalenderDecoder.elm",
+			"settings":
+			{
+				"buffer_size": 117,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "in",
+		"selected_items":
+		[
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"sass",
+				"SassBeautify"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 432.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/Documents/GitHub/Scheduler",
+		"/D/Documents/GitHub/Scheduler/src"
+	],
+	"file_history":
+	[
+		"/D/Documents/GitHub/Scheduler/src/TestData.elm",
+		"/D/Documents/sites/elmProfile/src/elm/Main.elm",
+		"/D/Documents/GitHub/Scheduler/gulpfile.js",
+		"/D/Documents/GitHub/Scheduler/src/Main.elm",
+		"/D/Documents/GitHub/chat/chat-interview/database/jsons/conversation_compiled.json",
+		"/D/Documents/GitHub/chat/chat-interview/database/jsons/4questions.json",
+		"/D/Documents/sites/elmProfile/elm-package.json",
+		"/D/Documents/sites/elmProfile/src/static/styles/main.scss",
+		"/D/Documents/sites/elmProfile/src/elm/Components/Project.elm",
+		"/D/Documents/sites/elmProfile/src/elm/AnimationHelper.elm",
+		"/D/Documents/sites/elmProfile/src/elm/AnimationTest.elm",
+		"/D/Documents/sites/elmProfile/src/elm/Components/Content.elm",
+		"/D/Documents/sites/elmProfile/src/elm/Components/Routing.elm",
+		"/D/Documents/sites/elmProfile/src/static/index.html",
+		"/D/Documents/sites/elmProfile/src/elm/Components/MainText.elm",
+		"/D/Documents/sites/elmProfile/src/static/index.js",
+		"/D/Documents/sites/elmProfile/src/elm/RouteTest.elm",
+		"/D/Documents/sites/elmProfile/profileColorsSite.txt",
+		"/D/Documents/sites/elmProfile/src/elm/Components/StartValues.elm",
+		"/D/Documents/sites/elmProfile/src/elm/Components/ProjectText.elm",
+		"/D/Documents/sites/elmProfile/src/elm/Components/ProjectImages.elm",
+		"/D/Documents/sites/elmProfile/node_modules/sockjs/examples/echo/index.html",
+		"/D/Documents/sites/elmProfile/src/elm/Components/ProjectText",
+		"/D/Documents/sites/elmProfile/README.md",
+		"/D/Documents/sites/elmProfile/src/elm/Old.elm",
+		"/D/Documents/sites/elmProfile/webpack.config.js",
+		"/D/Documents/sites/elmProfile/src/elm/SingleArray.elm",
+		"/D/Documents/GitHub/chat/chat-interview/public/scss/_result.scss",
+		"/D/Documents/GitHub/chat/chat-interview/public/scss/_preview.scss",
+		"/D/Documents/GitHub/chat/chat-interview/database/example.json",
+		"/D/Documents/GitHub/chat/chat-interview/views/preview.ejs",
+		"/D/Documents/GitHub/chat/chat-interview/public/js/requests-front.js",
+		"/D/Documents/GitHub/chat/chat-interview/views/tip.ejs",
+		"/D/Documents/GitHub/chat/chat-interview/database/empty.json",
+		"/D/Documents/GitHub/chat/chat-interview/views/result.ejs",
+		"/D/Documents/GitHub/chat/chat-interview/routes/index.js",
+		"/D/Documents/GitHub/chat/chat-interview/public/js/default.js",
+		"/D/Documents/GitHub/chat/chat-interview/database/conversation_compiled.json",
+		"/D/Desktop/lördag/chattFrågorInnanTränare.docx",
+		"/D/Documents/GitHub/chat/chat-interview/views/template/bottom.ejs",
+		"/D/Documents/GitHub/chat/chat-interview/views/template/top.ejs",
+		"/D/Documents/GitHub/chat/chat-interview/database/old_version2.json",
+		"/D/Documents/GitHub/chat/chat-interview/database/nils.json",
+		"/D/Documents/GitHub/chat/chat-interview/database/oskar.json",
+		"/D/Documents/GitHub/chat/chat-interview/database/old_version1.json",
+		"/D/Documents/GitHub/chat/chat-interview/public/js/tip.js",
+		"/D/Documents/GitHub/chat/chat-interview/database/conversation.json",
+		"/D/Documents/GitHub/chat/chat-interview/public/js/logic-front.js",
+		"/D/Documents/GitHub/chat/chat-interview/database/databaseApi.js",
+		"/D/Documents/GitHub/chat/chat-interview/views/index.ejs",
+		"/D/Documents/GitHub/chat/chat-interview/views/step-by-step.ejs",
+		"/D/Documents/GitHub/chat/chat-interview/views/notification.ejs",
+		"/D/Documents/GitHub/chat/chat-interview/public/img/friends/erik-westbom.jpg",
+		"/D/Documents/GitHub/chat/chat-interview/public/js/jquery.min.js",
+		"/D/Documents/GitHub/chat/chat-interview/database/jc.py",
+		"/D/Documents/GitHub/chat/chat-interview/database/json_compiler.py",
+		"/D/Documents/GitHub/chat/chat-interview/public/img/matchInfo/dalen.png",
+		"/D/Documents/GitHub/chat/chat-interview/public/scss/_tip.scss",
+		"/D/Documents/GitHub/chat/chat-interview/views/result-with-tip-response.ejs",
+		"/D/Desktop/imageList.csv",
+		"/D/Documents/GitHub/Computer-Vision/Android/MyApplication2/app/src/main/java/com/example/treemapp/MainActivity.java",
+		"/D/Documents/GitHub/chat/chat-interview/public/js/script.js",
+		"/D/Desktop/mosaic/imageList.csv",
+		"/D/Documents/GitHub/Computer-Vision/c++Project/src/FeaturePoints.cpp",
+		"/D/Documents/GitHub/Computer-Vision/c++Project/src/FeaturePoints.h",
+		"/D/Documents/GitHub/Computer-Vision/c++Project/src/Main.cpp",
+		"/D/Documents/GitHub/Computer-Vision/Android/MyApplication2/app/src/main/java/com/example/treemapp/OriginalImageActivity.java",
+		"/D/Documents/GitHub/chat/chat-interview/public/scss/_setup.scss",
+		"/D/Documents/GitHub/chat/chat-interview/public/scss/main.scss",
+		"/D/Documents/GitHub/chat/chat-interview/public/css/main.css",
+		"/D/Documents/GitHub/chat/chat-interview/public/scss/setup.scss",
+		"/D/Documents/GitHub/chat/chat-interview/public/scss/preview.scss",
+		"/D/Documents/GitHub/chat/chat-interview/public/scss/tip.scss",
+		"/D/Downloads/18280759_10209663973462032_1406514393_n.jpg",
+		"/D/Documents/GitHub/chat/chat-interview/public/css/setup.css",
+		"/D/Documents/GitHub/chat/chat-interview/public/css/preview.css",
+		"/D/Documents/GitHub/chat/chat-interview/.gitignore",
+		"/C/Users/oskar/.android/debug.keystore",
+		"/D/Documents/GitHub/chat/chat-interview/gulpfile.js",
+		"/D/Documents/GitHub/chat/chat-interview/server.js",
+		"/D/Documents/GitHub/chat/chat-interview/public/js/animations-front.js",
+		"/E/firsttry/androidData.txt",
+		"/D/Documents/GitHub/Computer-Vision/Android/MyApplication2/app/src/main/res/layout/tree_input.xml",
+		"/D/Documents/GitHub/Computer-Vision/cpp-code/src/generic-driver.h",
+		"/D/Downloads/UDP-remote/UDP-remote/views/index.ejs",
+		"/D/Downloads/UDP-remote/UDP-remote/public/javascripts/scripts.js",
+		"/D/Documents/GitHub/chat/chat-interview/database/test.js",
+		"/D/Documents/GitHub/chat/chat-interview/package.json",
+		"/D/Desktop/putbox/bla.js",
+		"/D/Desktop/conversation.json",
+		"/D/Desktop/conversation_compiled.json",
+		"/D/Documents/GitHub/chat-interview/public/scss/setup.scss",
+		"/D/Documents/GitHub/chat-interview/public/scss/main.scss",
+		"/D/Documents/GitHub/chat-interview/public/js/script.js",
+		"/D/Documents/GitHub/profilegit/profile/client/main.styl",
+		"/D/Documents/GitHub/chat-interview/views/index.ejs",
+		"/D/Documents/sites/profile/imports/ui/admin/Login.jsx",
+		"/D/Desktop/test/express_boilerplate-master/public/js/all.json",
+		"/D/Desktop/test/express_boilerplate-master/server.js",
+		"/D/Desktop/test/express_boilerplate-master/all.json",
+		"/D/Desktop/test/express_boilerplate-master/package.json",
+		"/D/Documents/sites/profile/imports/ui/App.jsx",
+		"/D/Desktop/test/express_boilerplate-master/public/scss/setup.scss",
+		"/D/Desktop/generateQuestions/generator.js",
+		"/D/Desktop/generateQuestions/everything.json",
+		"/D/Desktop/generateQuestions/package.json",
+		"/D/Documents/sites/profile/imports/ui/admin/Adder.jsx",
+		"/D/Documents/sites/profile/server/account-creation.js",
+		"/D/Documents/sites/profile/client/main.styl",
+		"/D/Documents/sites/profile/imports/ui/Project.jsx",
+		"/D/Downloads/ef_conv_zip_2Yw42T48s3jeb8zutozgzAeF/sportswik-icons.svg",
+		"/D/Documents/sites/resolutionsReact/imports/startup/accounts-config.js",
+		"/D/Documents/sites/profile/server/main.js",
+		"/D/Documents/sites/profile/imports/ui/admin/Registration.jsx",
+		"/D/Documents/sites/profile/imports/ui/admin/Registration",
+		"/D/Documents/sites/profile/imports/ui/admin/LoginPasswordForm.jsx",
+		"/D/Documents/sites/profile/imports/ui/AccountsUIWrapper.jsx",
+		"/D/Documents/sites/profile/imports/startup/accounts-config.js",
+		"/D/Documents/sites/resolutionsReact/imports/ui/App.jsx",
+		"/D/Documents/sites/profile/client/main.jsx",
+		"/D/Documents/sites/profile/.meteor/packages",
+		"/D/Documents/sites/profile/imports/ui/Quote.jsx",
+		"/D/Downloads/wood-987088.jpg",
+		"/D/Documents/sites/profile/imports/api/projects.js",
+		"/D/Documents/sites/profile/imports/ui/Foot.jsx",
+		"/D/Documents/sites/resolutionsReact/client/main.jsx",
+		"/D/Documents/sites/profile/public/assets/test.txt",
+		"/D/Documents/sites/profile/imports/project-texts/test.jsx"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			"D:\\Documents\\GitHub\\chat\\chat-interview\\public\\js",
+			"main.styl"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"{",
+			"styleFn",
+			"Animation",
+			"rem",
+			"case",
+			"render",
+			"#",
+			"font-weight: bol",
+			"subsc",
+			"himage",
+			"1B4353",
+			"10rem",
+			"h1",
+			"Animation",
+			"sub",
+			"subsc",
+			"rem",
+			"emptyCell",
+			"Main",
+			" \"",
+			"0",
+			"function",
+			"Update",
+			"Increment",
+			"tipFriends()",
+			"videoSequence",
+			"block",
+			"quote",
+			" \n",
+			"helvetica",
+			"li",
+			"align-self",
+			"$",
+			"';\n",
+			":",
+			"9px",
+			"8px",
+			"7px",
+			"6px",
+			"4px",
+			"3px",
+			"2px",
+			"1px",
+			"5px",
+			"0px",
+			";",
+			"}",
+			"{",
+			"font-si",
+			"names",
+			"strip",
+			"this",
+			"self"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"projectEmpty",
+			"",
+			".8rem",
+			".7rem",
+			".6rem",
+			".4rem",
+			".3rem",
+			".2rem",
+			".1rem",
+			".5rem",
+			"rem",
+			""
+		],
+		"reverse": false,
+		"show_context": false,
+		"use_buffer2": false,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/Main.elm",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 343,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7,
+								3
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Elm Language Support/Syntaxes/Elm.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/App.elm",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2967,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2668,
+								2668
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Elm Language Support/Syntaxes/Elm.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1842.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/Calendar.elm",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2043,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1968,
+								1968
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Elm Language Support/Syntaxes/Elm.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1101.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/CalenderDecoder.elm",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 117,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								116,
+								37
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Elm Language Support/Syntaxes/Elm.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 30.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.elm_format":
+	{
+		"height": 124.0
+	},
+	"output.elm_type":
+	{
+		"height": 0.0
+	},
+	"output.find_results":
+	{
+		"height": 94.0
+	},
+	"pinned_build_system": "",
+	"project": "mashup.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"public\\js\\script.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"$('#first form')"
+			],
+			[
+				"{",
+				"{\n\t\t\t\texpect("
+			]
+		],
+		"width": 782.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 205.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

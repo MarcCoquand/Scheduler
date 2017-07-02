@@ -93,6 +93,7 @@ gulp.task('elm-compile', ['elm-init'], function() {
         // No longer needed with gulp-elm 0.5
 		// console.log(err.message);
 	}
+
 	return gulp.src(paths.elmMain)             // "./src/Main.elm"
 	.pipe(elm({"debug": true}))
 	.on('error', onErrorHandler)
@@ -104,11 +105,16 @@ gulp.task('elm-compile-production', ['elm-init'], function() {
 	// By explicitly handling errors, we prevent Gulp crashing when compile fails
 	function onErrorHandler(err) {
         // No longer needed with gulp-elm 0.5
-		// console.log(err.message);
+		console.log(err.message);
+	}
+	function onWarningHandler(warn) {
+        // No longer needed with gulp-elm 0.5
+		console.log(warn.message);
 	}
 	return gulp.src(paths.elmMain)             // "./src/Main.elm"
 	.pipe(elm())
 	.on('error', onErrorHandler)
+	.on('warning', onWarningHandler)
 	.pipe( gulpif(production, uglify()) )   // uglify
 	.pipe(gulp.dest(paths.dist));
 })

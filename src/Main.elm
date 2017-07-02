@@ -1,13 +1,17 @@
 module Main exposing (main)
 
-import Html
-import App exposing (init, update, view)
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Events exposing (..)
+import App exposing (..)
+import Navigation
 
 
 main =
-    Html.program
+    Navigation.program
+        (always Nop)
         { init = init
-        , update = update
         , view = view
+        , update = update
         , subscriptions = always Sub.none
         }
