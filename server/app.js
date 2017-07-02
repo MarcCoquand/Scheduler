@@ -5,9 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var MongoClient = require('mongodb').MongoClient
-var mongoose = require('mongoose');
 var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -27,18 +25,8 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
-
-mongoose.connect('mongodb://localhost:27017/test');
-var db = mongoose.connection;
-
-db.on('error', function (err) {
-    console.log('connection error:'+ err.message);
-});
-db.once('open', function callback () {
-    console.log('Connected to database');
-});
-
 // error handlers
+
 
 // development error handler
 // will print stacktrace
