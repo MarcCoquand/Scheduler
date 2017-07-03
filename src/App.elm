@@ -9,20 +9,10 @@ import Calendar exposing (..)
 import OAuth exposing (..)
 import Dict exposing (..)
 import List exposing (..)
+import Model exposing (..)
 
 
 -- MODEL
-
-
-type alias Model =
-    { message : String
-    , calendars : Dict String String
-    , events : List ( String, Calendar.Event )
-    , working : Bool
-    , token : Maybe OAuth.Token
-    , route : Location
-    }
-
 
 init : Location -> ( Model, Cmd Msg )
 init location =
@@ -104,7 +94,8 @@ view model =
     div []
     [ h1 [] [ text "Quick meeting scheduler!" ]
     , p [] [ text <| toString model.calendars ]
-    , a [ href <| OAuth.buildAuthUrl googleAuthClient ] [ text "google login" ]
+    , a [ href <| OAuth.buildAuthUrl Calendar.googleAuthClient ] 
+        [ text "google login" ]
     , p [] [ text <| toString model.token ]
     , button [ onClick GetCalendars ] [ text "click to load calendars" ]
     , eventButton model.token model.calendars
@@ -175,12 +166,14 @@ findEvents r =
             Nop
 
 
-sendCalendarRequest : OAuth.Token -> ApiDef -> List ( String, String ) -> Cmd Msg
+sendCalendarRequest : 
+    OAuth.Token -> Calendar.ApiDef -> List ( String, String ) -> Cmd Msg
 sendCalendarRequest token def fields =
     Http.send findCalendars (req token def fields)
 
 
-sendEventRequest : OAuth.Token -> ApiDef -> List ( String, String ) -> Cmd Msg
+sendEventRequest : 
+    OAuth.Token -> Calendar.ApiDef -> List ( String, String ) -> Cmd Msg
 sendEventRequest token def fields =
     Http.send findEvents (req token def fields)
 
