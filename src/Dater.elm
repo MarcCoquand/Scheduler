@@ -2,6 +2,7 @@ module Dater exposing (..)
 
 import Date exposing (..)
 import Time exposing (..)
+import Tuple exposing (first)
 
 
 --returns the difference between the two dates in minutes
@@ -17,15 +18,6 @@ formatInteger int =
             "0" ++ toString (abs int)
     else
         toString int
-
-
-type alias EasyDate =
-    { name : String
-    , dateRange : String
-    , timeRange : String
-    , d1 : Date
-    , d2 : Date
-    }
 
 
 formatAll : String -> Date -> Date -> EasyDate
@@ -124,3 +116,75 @@ overLaps ( d1Start, d1End ) ( d2Start, d2End ) =
             isOrder d2End d1Start
     in
         xor d1IsBefore d2IsBefore
+
+
+type alias EasyDate =
+    { name : String
+    , dateRange : String
+    , timeRange : String
+    , d1 : Date
+    , d2 : Date
+    }
+
+
+type alias Config =
+    { currentDate : Date
+    , endDate : Date
+    }
+
+
+freeDates : List ( Date, Date ) -> Config -> List ( Date, Date )
+freeDates events config =
+    let
+        event =
+            List.head events
+
+        currentDate =
+            config.currentDate
+
+        next =
+            { config | currentDate = nextDay currentDate }
+    in
+        if (isOrder config.currentDate config.endDate) then
+            case event of
+                Nothing ->
+                    [ nineToFive currentDate ] ++ freeDates events next
+
+                Just event ->
+                    if (sameDate currentDate (Tuple.first event)) then
+                        freeDates events next
+                    else if (isOrder currentDate (Tuple.first event)) then
+                        [ nineToFive currentDate ] ++ freeDates events next
+                    else
+                        case List.tail events of
+                            Nothing ->
+                                [ nineToFive currentDate ] ++ freeDates [] next
+
+                            Just restOfEvents ->
+                                freeDates restOfEvents config
+        else
+            []
+
+
+nineToFive : Date -> ( Date, Date )
+nineToFive date =
+    let
+        dateAsTime =
+            Date.toTime date
+
+        start =
+            Date.fromTime <| toFloat <| round (Time.inHours dateAsTime / 24) + round (9 * Time.hour)
+
+        end =
+            Date.fromTime <| toFloat <| round (Time.inHours dateAsTime / 24) + round (17 * Time.hour)
+    in
+        ( start, end )
+
+
+
+--TODO
+
+
+nextDay : Date -> Date
+nextDay d =
+    Date.fromTime <| (24 * Time.hour) + Date.toTime d

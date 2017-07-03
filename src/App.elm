@@ -12,12 +12,12 @@ import List exposing (..)
 import Dater exposing (..)
 import Model exposing (..)
 import Create exposing (..)
-import Date exposing (..)
 
 
 -- MODEL
 
 
+initSendForm : SendForm
 initSendForm =
     { email = Nothing
     , startDate = Nothing
@@ -67,7 +67,7 @@ update msg model =
             ( { model | message = toString err }, Cmd.none )--}
         --Login token
         Token (Ok t) ->
-            ( { model | token = Just t }, Cmd.none )
+            ( { model | token = Just t }, calendarCmd (Just t) )
 
         Token (Err err) ->
             ( { model | message = toString err }, Cmd.none )
@@ -78,10 +78,10 @@ update msg model =
 
         --Calendar
         GetCalendars ->
-            ( model, calendarCmd model )
+            ( model, calendarCmd model.token )
 
         GetEvents calendarID ->
-            ( model, eventsCmd model calendarID )
+            ( model, eventsCmd model.token calendarID )
 
         ShowCalendars calendars ->
             ( { model | calendars = calendars }, Cmd.none )
@@ -133,18 +133,25 @@ message404 =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ h1 [] [ text "Quick meeting scheduler!" ]
-        , p [] [ text <| toString model.calendars ]
-        , a [ href <| OAuth.buildAuthUrl Calendar.googleAuthClient ]
-            [ text "google login" ]
-        , p [] [ text <| toString model.token ]
-        , button [ onClick GetCalendars ] [ text "click to load calendars" ]
-        , eventButton model.token model.calendars
-        , p [] [ text <| toString model.events ]
-        , renderCreate model
-        , ul [] (List.map createLi (formatEvents model.events))
-        ]
+    case model.token of
+        Nothing ->
+            div []
+                [ h1 [] [ text "Welcome to quick meeting scheduler" ]
+                , p [] [ text "Use your google calendar to make sure you do not double book" ]
+                , a [ href <| OAuth.buildAuthUrl Calendar.googleAuthClient ]
+                    [ text "google login" ]
+                ]
+
+        Just token ->
+            div []
+                [ h1 [] [ text "Quick meeting scheduler!" ]
+                , p [] [ text <| toString model.token ]
+                , button [ onClick GetCalendars ] [ text "click to load calendars" ]
+                , eventButton model.token model.calendars
+                , p [] [ text <| toString model.events ]
+                , renderCreate model
+                , ul [] (List.map createLi (formatEvents model.events))
+                ]
 
 
 createLi : EasyDate -> Html Msg
@@ -215,9 +222,9 @@ eventButton token calendars =
 -- COMMANDS
 
 
-eventsCmd : Model -> String -> Cmd Msg
-eventsCmd model calendarID =
-    case model.token of
+eventsCmd : Maybe OAuth.Token -> String -> Cmd Msg
+eventsCmd token calendarID =
+    case token of
         Just token ->
             sendEventRequest token (events calendarID) []
 
@@ -225,11 +232,11 @@ eventsCmd model calendarID =
             Cmd.none
 
 
-calendarCmd : Model -> Cmd Msg
-calendarCmd model =
-    case model.token of
+calendarCmd : Maybe OAuth.Token -> Cmd Msg
+calendarCmd token =
+    case token of
         Just token ->
-            sendCalendarRequest token calendar []
+            sendCalendarRequest token Calendar.calendar []
 
         Nothing ->
             Cmd.none
