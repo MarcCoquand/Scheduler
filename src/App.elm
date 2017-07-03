@@ -9,17 +9,21 @@ import Calendar exposing (..)
 import OAuth exposing (..)
 import Dict exposing (..)
 import List exposing (..)
+import Dater exposing (..)
 import Model exposing (..)
 import Create exposing (..)
 import Date exposing (..)
 
+
 -- MODEL
 
-initSendForm = 
-    { email     = Nothing
+
+initSendForm =
+    { email = Nothing
     , startDate = Nothing
-    , endDate   = Nothing
+    , endDate = Nothing
     }
+
 
 init : Location -> ( Model, Cmd Msg )
 init location =
@@ -41,9 +45,6 @@ init location =
 
 -- UPDATE
 
-updateMail : SendForm -> String -> SendForm
-updateMail sendForm mail =
-    { sendForm | email = Just mail }
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -89,8 +90,8 @@ update msg model =
             ( { model | events = events }, Cmd.none )
 
         NewMail mail ->
-            ( {model |  sendform = updateMail model.sendform mail }
-            , Cmd.none 
+            ( { model | sendform = updateMail model.sendform mail }
+            , Cmd.none
             )
 
         ToggleDayInterval timeofday ->
@@ -117,6 +118,10 @@ update msg model =
         SwitchToDate newDate ->
             ( { model | withindate = newDate }, Cmd.none )
 
+updateMail : SendForm -> String -> SendForm
+updateMail sendForm mail =
+    { sendForm | email = Just mail }
+
 message404 : String
 message404 =
     "I got a 404."
@@ -129,16 +134,57 @@ message404 =
 view : Model -> Html Msg
 view model =
     div []
-    [ h1 [] [ text "Quick meeting scheduler!" ]
-    , p [] [ text <| toString model.calendars ]
-    , a [ href <| OAuth.buildAuthUrl Calendar.googleAuthClient ] 
-        [ text "google login" ]
-    , p [] [ text <| toString model.token ]
-    , button [ onClick GetCalendars ] [ text "click to load calendars" ]
-    , eventButton model.token model.calendars
-    , p [] [ text <| toString model.events ]
-    , renderCreate model
-    ]
+        [ h1 [] [ text "Quick meeting scheduler!" ]
+        , p [] [ text <| toString model.calendars ]
+        , a [ href <| OAuth.buildAuthUrl Calendar.googleAuthClient ]
+            [ text "google login" ]
+        , p [] [ text <| toString model.token ]
+        , button [ onClick GetCalendars ] [ text "click to load calendars" ]
+        , eventButton model.token model.calendars
+        , p [] [ text <| toString model.events ]
+        , renderCreate model
+        , ul [] (List.map createLi (formatEvents model.events))
+        ]
+
+
+createLi : EasyDate -> Html Msg
+createLi content =
+    li [] [ text content.name, br [] [], text content.dateRange, br [] [], text content.timeRange ]
+
+
+formatEvents : List ( String, Event ) -> List EasyDate
+formatEvents list =
+    case head list of
+        Nothing ->
+            []
+
+        Just ( id, event ) ->
+            case tail list of
+                Nothing ->
+                    case event.start of
+                        Just start ->
+                            case event.end of
+                                Just end ->
+                                    [ Dater.formatAll event.name start end ]
+
+                                Nothing ->
+                                    []
+
+                        Nothing ->
+                            []
+
+                Just restOfTheList ->
+                    case event.start of
+                        Just start ->
+                            case event.end of
+                                Just end ->
+                                    [ Dater.formatAll event.name start end ] ++ formatEvents restOfTheList
+
+                                Nothing ->
+                                    [] ++ formatEvents restOfTheList
+
+                        Nothing ->
+                            [] ++ formatEvents restOfTheList
 
 
 eventButton : Maybe OAuth.Token -> Dict String String -> Html Msg
@@ -157,7 +203,12 @@ eventButton token calendars =
                         text "No calendars"
 
                     Just key ->
-                        button [ onClick <| GetEvents key ] [ text key ]
+                        case Dict.get key calendars of
+                            Nothing ->
+                                text "Could not find calender"
+
+                            Just calendarID ->
+                                button [ onClick <| GetEvents calendarID ] [ text key ]
 
 
 
@@ -204,14 +255,12 @@ findEvents r =
             Nop
 
 
-sendCalendarRequest : 
-    OAuth.Token -> Calendar.ApiDef -> List ( String, String ) -> Cmd Msg
+sendCalendarRequest : OAuth.Token -> Calendar.ApiDef -> List ( String, String ) -> Cmd Msg
 sendCalendarRequest token def fields =
     Http.send findCalendars (req token def fields)
 
 
-sendEventRequest : 
-    OAuth.Token -> Calendar.ApiDef -> List ( String, String ) -> Cmd Msg
+sendEventRequest : OAuth.Token -> Calendar.ApiDef -> List ( String, String ) -> Cmd Msg
 sendEventRequest token def fields =
     Http.send findEvents (req token def fields)
 

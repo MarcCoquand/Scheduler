@@ -5,6 +5,8 @@ import OAuth.Config exposing (..)
 import Http
 import Json.Decode exposing (..)
 import Dict exposing (..)
+import Date exposing (..)
+import Json.Decode.Extra exposing (..)
 
 
 googleAuthClient : OAuth.Client
@@ -39,7 +41,7 @@ events : String -> ApiDef
 events calendarID =
     { name = "calendar"
     , version = "v3"
-    , collection = "calendars/" ++ "primary" ++ "/events" --Todo, replace primary with calendarID
+    , collection = "calendars/" ++ calendarID ++ "/events" --Todo, replace primary with calendarID
     , method = "get"
     }
 
@@ -125,10 +127,10 @@ findEvents input =
             decodeString (field "items" <| list <| maybe <| field "summary" string) <| input
 
         startTimes =
-            decodeString (field "items" <| list <| maybe <| at [ "start", "dateTime" ] string) <| input
+            decodeString (field "items" <| list <| maybe <| at [ "start", "dateTime" ] date) <| input
 
         endTimes =
-            decodeString (field "items" <| list <| maybe <| at [ "start", "dateTime" ] string) <| input
+            decodeString (field "items" <| list <| maybe <| at [ "start", "dateTime" ] date) <| input
     in
         case ids of
             Err errorMessage ->
@@ -155,14 +157,14 @@ findEvents input =
 
 type alias Event =
     { name : String
-    , start : String
-    , end : String
+    , start : Maybe Date
+    , end : Maybe Date
     }
 
 
 errorEvent : String -> Event
 errorEvent message =
-    { name = message, start = "..", end = ".." }
+    { name = message, start = Nothing, end = Nothing }
 
 
 filterOutNothings : List (Maybe a) -> List a
@@ -190,7 +192,7 @@ filterOutNothings things =
                             [ a ] ++ filterOutNothings rest
 
 
-makeEvent : String -> Maybe String -> Maybe String -> Maybe String -> Maybe ( String, Event )
+makeEvent : String -> Maybe String -> Maybe Date -> Maybe Date -> Maybe ( String, Event )
 makeEvent id name start end =
     case name of
         Nothing ->
@@ -209,5 +211,5 @@ makeEvent id name start end =
                         Just end ->
                             Just
                                 ( id
-                                , { name = name, start = start, end = end }
+                                , { name = name, start = Just start, end = Just end }
                                 )
