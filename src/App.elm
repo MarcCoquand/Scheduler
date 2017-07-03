@@ -23,7 +23,7 @@ initSendForm =
 
 init : Location -> ( Model, Cmd Msg )
 init location =
-    ( Model 
+    ( Model.Model 
         "No message" 
         Dict.empty 
         [] 
@@ -32,6 +32,8 @@ init location =
         location 
         initSendForm
         [Morning]
+        [Weekday]
+        OneWeek
     , OAuth.init googleAuthClient location |> Cmd.map Token
     )
 
@@ -90,6 +92,30 @@ update msg model =
             ( {model |  sendform = updateMail model.sendform mail }
             , Cmd.none 
             )
+
+        ToggleDayInterval timeofday ->
+            if (List.member timeofday model.timeconfig) then 
+                ( { model | timeconfig = 
+                    List.filter (\x -> x /= timeofday) model.timeconfig 
+                  }
+                , Cmd.none )
+            else 
+                ( { model | timeconfig = timeofday :: model.timeconfig }, Cmd.none )
+
+        ToggleWeekInterval timeofweek ->
+            if (List.member timeofweek model.weekconfig) then 
+                ( { model | weekconfig = 
+                    List.filter (\x -> x /= timeofweek) model.weekconfig 
+                  }
+                , Cmd.none 
+                )
+            else 
+                ( { model | weekconfig = timeofweek :: model.weekconfig }
+                , Cmd.none 
+                )
+
+        SwitchToDate newDate ->
+            ( { model | withindate = newDate }, Cmd.none )
 
 message404 : String
 message404 =
