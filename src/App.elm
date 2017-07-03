@@ -17,7 +17,7 @@ import List exposing (..)
 type alias Model =
     { message : String
     , calendars : Dict String String
-    , events : Dict String Calendar.Event
+    , events : List ( String, Calendar.Event )
     , working : Bool
     , token : Maybe OAuth.Token
     , route : Location
@@ -26,7 +26,7 @@ type alias Model =
 
 init : Location -> ( Model, Cmd Msg )
 init location =
-    ( Model "No message" Dict.empty Dict.empty False Nothing location
+    ( Model "No message" Dict.empty [] False Nothing location
     , OAuth.init googleAuthClient location |> Cmd.map Token
     )
 
@@ -43,7 +43,7 @@ type Msg
     | GetEvents String
     | GetCalendars
     | ShowCalendars (Dict String String)
-    | ShowEvents (Dict String Calendar.Event)
+    | ShowEvents (List ( String, Calendar.Event ))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

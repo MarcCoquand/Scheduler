@@ -107,15 +107,15 @@ findCalendars input =
                         Dict.fromList []
 
                     Ok names ->
-                        Dict.fromList <| List.map2 couple ids names
+                        Dict.fromList <| List.map2 couple names ids
 
 
 couple : String -> String -> ( String, String )
-couple id name =
-    ( id, name )
+couple name id =
+    ( name, id )
 
 
-findEvents : String -> Dict String Event
+findEvents : String -> List ( String, Event )
 findEvents input =
     let
         ids =
@@ -132,37 +132,37 @@ findEvents input =
     in
         case ids of
             Err errorMessage ->
-                Dict.fromList []
+                []
 
             Ok ids ->
                 case startTimes of
                     Err errorMessage ->
-                        Dict.singleton "errorID" <| errorEvent errorMessage
+                        [ ( "errorID", errorEvent errorMessage ) ]
 
                     Ok startTimes ->
                         case endTimes of
                             Err errorMessage ->
-                                Dict.singleton "errorID" <| errorEvent errorMessage
+                                [ ( "errorID", errorEvent errorMessage ) ]
 
                             Ok endTimes ->
                                 case names of
                                     Err errorMessage ->
-                                        Dict.singleton "errorID" <| errorEvent errorMessage
+                                        [ ( "errorID", errorEvent errorMessage ) ]
 
                                     Ok names ->
-                                        Dict.fromList <| filterOutNothings <| List.map4 makeEvent ids names startTimes endTimes
+                                        filterOutNothings <| List.map4 makeEvent ids names startTimes endTimes
 
 
 type alias Event =
-    { name : Maybe String
-    , start : Maybe String
-    , end : Maybe String
+    { name : String
+    , start : String
+    , end : String
     }
 
 
 errorEvent : String -> Event
 errorEvent message =
-    { name = Just message, start = Just "..", end = Just ".." }
+    { name = message, start = "..", end = ".." }
 
 
 filterOutNothings : List (Maybe a) -> List a
@@ -209,15 +209,5 @@ makeEvent id name start end =
                         Just end ->
                             Just
                                 ( id
-                                , { name = Just name, start = Just start, end = Just end }
+                                , { name = name, start = start, end = end }
                                 )
-
-
-
-{--
-    makeUnnamedEvent : String -> String -> String -> ( String, Event )
-    makeUnnamedEvent id start end =
-    ( id
-    , { name = Just "no name", start = Just start, end = Just end }
-    )
---}
