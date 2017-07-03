@@ -9,6 +9,7 @@ import Calendar exposing (..)
 import OAuth exposing (..)
 import Dict exposing (..)
 import List exposing (..)
+import Model exposing (..)
 
 
 -- MODEL
@@ -16,3 +17,7 @@ import List exposing (..)
 -- UPDATE
 
 -- VIEW
+
+renderCreate : Model -> Html Msg
+renderCreate model =
+    div [] [text "hello"]

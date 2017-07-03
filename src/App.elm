@@ -10,7 +10,7 @@ import OAuth exposing (..)
 import Dict exposing (..)
 import List exposing (..)
 import Model exposing (..)
-
+import Create exposing (..)
 
 -- MODEL
 
@@ -23,17 +23,6 @@ init location =
 
 
 -- UPDATE
-
-
-type Msg
-    = Nop
-    --| FetchResponse (Result Http.Error String)
-    | Token (Result Http.Error OAuth.Token)
-    | UrlChange Location
-    | GetEvents String
-    | GetCalendars
-    | ShowCalendars (Dict String String)
-    | ShowEvents (List ( String, Calendar.Event ))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
