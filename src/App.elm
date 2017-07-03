@@ -10,41 +10,38 @@ import OAuth exposing (..)
 import Dict exposing (..)
 import List exposing (..)
 import Dater exposing (..)
+import Model exposing (..)
+import Create exposing (..)
+import Date exposing (..)
 
 
 -- MODEL
 
 
-type alias Model =
-    { message : String
-    , calendars : Dict String String
-    , events : List ( String, Calendar.Event )
-    , working : Bool
-    , token : Maybe OAuth.Token
-    , route : Location
+initSendForm =
+    { email = Nothing
+    , startDate = Nothing
+    , endDate = Nothing
     }
 
 
 init : Location -> ( Model, Cmd Msg )
 init location =
-    ( Model "No message" Dict.empty [] False Nothing location
+    ( Model
+        "No message"
+        Dict.empty
+        []
+        False
+        Nothing
+        location
+        initSendForm
+        [ Morning ]
     , OAuth.init googleAuthClient location |> Cmd.map Token
     )
 
 
 
 -- UPDATE
-
-
-type Msg
-    = Nop
-      --| FetchResponse (Result Http.Error String)
-    | Token (Result Http.Error OAuth.Token)
-    | UrlChange Location
-    | GetEvents String
-    | GetCalendars
-    | ShowCalendars (Dict String String)
-    | ShowEvents (List ( String, Calendar.Event ))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -90,6 +87,16 @@ update msg model =
         ShowEvents events ->
             ( { model | events = events }, Cmd.none )
 
+        NewMail mail ->
+            ( { model | sendform = updateMail model.sendform mail }
+            , Cmd.none
+            )
+
+
+updateMail : SendForm -> String -> SendForm
+updateMail sendForm mail =
+    { sendForm | email = Just mail }
+
 
 message404 : String
 message404 =
@@ -105,10 +112,13 @@ view model =
     div []
         [ h1 [] [ text "Quick meeting scheduler!" ]
         , p [] [ text <| toString model.calendars ]
-        , a [ href <| OAuth.buildAuthUrl googleAuthClient ] [ text "google login" ]
+        , a [ href <| OAuth.buildAuthUrl Calendar.googleAuthClient ]
+            [ text "google login" ]
         , p [] [ text <| toString model.token ]
         , button [ onClick GetCalendars ] [ text "click to load calendars" ]
         , eventButton model.token model.calendars
+        , p [] [ text <| toString model.events ]
+        , renderCreate model
         , ul [] (List.map createLi (formatEvents model.events))
         ]
 
@@ -221,12 +231,12 @@ findEvents r =
             Nop
 
 
-sendCalendarRequest : OAuth.Token -> ApiDef -> List ( String, String ) -> Cmd Msg
+sendCalendarRequest : OAuth.Token -> Calendar.ApiDef -> List ( String, String ) -> Cmd Msg
 sendCalendarRequest token def fields =
     Http.send findCalendars (req token def fields)
 
 
-sendEventRequest : OAuth.Token -> ApiDef -> List ( String, String ) -> Cmd Msg
+sendEventRequest : OAuth.Token -> Calendar.ApiDef -> List ( String, String ) -> Cmd Msg
 sendEventRequest token def fields =
     Http.send findEvents (req token def fields)
 
