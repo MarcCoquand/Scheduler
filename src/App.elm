@@ -9,6 +9,7 @@ import Calendar exposing (..)
 import OAuth exposing (..)
 import Dict exposing (..)
 import List exposing (..)
+import Dater exposing (..)
 
 
 -- MODEL
@@ -37,7 +38,7 @@ init location =
 
 type Msg
     = Nop
-    --| FetchResponse (Result Http.Error String)
+      --| FetchResponse (Result Http.Error String)
     | Token (Result Http.Error OAuth.Token)
     | UrlChange Location
     | GetEvents String
@@ -102,14 +103,54 @@ message404 =
 view : Model -> Html Msg
 view model =
     div []
-    [ h1 [] [ text "Quick meeting scheduler!" ]
-    , p [] [ text <| toString model.calendars ]
-    , a [ href <| OAuth.buildAuthUrl googleAuthClient ] [ text "google login" ]
-    , p [] [ text <| toString model.token ]
-    , button [ onClick GetCalendars ] [ text "click to load calendars" ]
-    , eventButton model.token model.calendars
-    , p [] [ text <| toString model.events ]
-    ]
+        [ h1 [] [ text "Quick meeting scheduler!" ]
+        , p [] [ text <| toString model.calendars ]
+        , a [ href <| OAuth.buildAuthUrl googleAuthClient ] [ text "google login" ]
+        , p [] [ text <| toString model.token ]
+        , button [ onClick GetCalendars ] [ text "click to load calendars" ]
+        , eventButton model.token model.calendars
+        , ul [] (List.map createLi (formatEvents model.events))
+        ]
+
+
+createLi : EasyDate -> Html Msg
+createLi content =
+    li [] [ text content.name, br [] [], text content.dateRange, br [] [], text content.timeRange ]
+
+
+formatEvents : List ( String, Event ) -> List EasyDate
+formatEvents list =
+    case head list of
+        Nothing ->
+            []
+
+        Just ( id, event ) ->
+            case tail list of
+                Nothing ->
+                    case event.start of
+                        Just start ->
+                            case event.end of
+                                Just end ->
+                                    [ Dater.formatAll event.name start end ]
+
+                                Nothing ->
+                                    []
+
+                        Nothing ->
+                            []
+
+                Just restOfTheList ->
+                    case event.start of
+                        Just start ->
+                            case event.end of
+                                Just end ->
+                                    [ Dater.formatAll event.name start end ] ++ formatEvents restOfTheList
+
+                                Nothing ->
+                                    [] ++ formatEvents restOfTheList
+
+                        Nothing ->
+                            [] ++ formatEvents restOfTheList
 
 
 eventButton : Maybe OAuth.Token -> Dict String String -> Html Msg
@@ -128,7 +169,12 @@ eventButton token calendars =
                         text "No calendars"
 
                     Just key ->
-                        button [ onClick <| GetEvents key ] [ text key ]
+                        case Dict.get key calendars of
+                            Nothing ->
+                                text "Could not find calender"
+
+                            Just calendarID ->
+                                button [ onClick <| GetEvents calendarID ] [ text key ]
 
 
 
