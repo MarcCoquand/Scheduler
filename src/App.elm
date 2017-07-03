@@ -11,12 +11,27 @@ import Dict exposing (..)
 import List exposing (..)
 import Model exposing (..)
 import Create exposing (..)
+import Date exposing (..)
 
 -- MODEL
 
+initSendForm = 
+    { email     = Nothing
+    , startDate = Nothing
+    , endDate   = Nothing
+    }
+
 init : Location -> ( Model, Cmd Msg )
 init location =
-    ( Model "No message" Dict.empty [] False Nothing location
+    ( Model 
+        "No message" 
+        Dict.empty 
+        [] 
+        False 
+        Nothing 
+        location 
+        initSendForm
+        [Morning]
     , OAuth.init googleAuthClient location |> Cmd.map Token
     )
 
@@ -24,6 +39,9 @@ init location =
 
 -- UPDATE
 
+updateMail : SendForm -> String -> SendForm
+updateMail sendForm mail =
+    { sendForm | email = Just mail }
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -68,6 +86,10 @@ update msg model =
         ShowEvents events ->
             ( { model | events = events }, Cmd.none )
 
+        NewMail mail ->
+            ( {model |  sendform = updateMail model.sendform mail }
+            , Cmd.none 
+            )
 
 message404 : String
 message404 =
@@ -89,6 +111,7 @@ view model =
     , button [ onClick GetCalendars ] [ text "click to load calendars" ]
     , eventButton model.token model.calendars
     , p [] [ text <| toString model.events ]
+    , renderCreate model
     ]
 
 
