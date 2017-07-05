@@ -7,12 +7,10 @@ import Http
 import Navigation exposing (Location)
 import Calendar exposing (..)
 import OAuth exposing (..)
-import Dict exposing (..)
 import List exposing (..)
 import Dater exposing (..)
 import Model exposing (..)
 import Create exposing (..)
-import Date exposing (..)
 
 
 -- MODEL
@@ -30,8 +28,14 @@ init : Location -> ( Model, Cmd Msg )
 init location =
     ( Model.Model
         "No message"
-        Dict.empty
         []
+        --calenders, will be fetched from google
+        []
+        --notYetFetchedEvents, those calenders that have not been processed into events
+        []
+        --events, all appointments
+        []
+        --filtered events´
         False
         Nothing
         location
@@ -81,14 +85,21 @@ update msg model =
         GetCalendars ->
             ( model, calendarCmd model.token )
 
-        GetEvents calendarID ->
-            ( model, eventsCmd model.token calendarID )
-
         ShowCalendars calendars ->
-            ( { model | calendars = calendars }, Cmd.none )
+            ( { model
+                | calendars = calendars
+                , notYetFetchedEvents = quickTail (extractIDs calendars)
+              }
+            , eventsCmd model.token (List.head (extractIDs calendars))
+            )
 
         ShowEvents events ->
-            ( { model | events = events }, Cmd.none )
+            ( { model
+                | events = Calendar.combineTwoCalenders events model.events
+                , notYetFetchedEvents = quickTail model.notYetFetchedEvents
+              }
+            , eventsCmd model.token (List.head model.notYetFetchedEvents)
+            )
 
         NewMail mail ->
             ( { model | sendform = updateMail model.sendform mail }
@@ -126,6 +137,16 @@ update msg model =
             ( { model | events = Dater.freeDates events config }, Cmd.none )
 
 
+quickTail : List a -> List a
+quickTail list =
+    Maybe.withDefault [] <| List.tail list
+
+
+extractIDs : List ( String, String ) -> List String
+extractIDs list =
+    (List.map (\( name, id ) -> id) list)
+
+
 updateMail : SendForm -> String -> SendForm
 updateMail sendForm mail =
     { sendForm | email = Just mail }
@@ -156,8 +177,7 @@ view model =
                 [ h1 [] [ text "Quick meeting scheduler!" ]
                 , p [] [ text <| toString model.token ]
                 , button [ onClick GetCalendars ] [ text "click to load calendars" ]
-                , eventButton model.token model.calendars
-                , p [] [ text <| toString model.events ]
+                , p [] [ text <| model.message ]
                 , renderCreate model
                 , button [ onClick <| ShowFreeDates model.events Dater.testConfig ] [ text "hi" ]
                 , ul [] (List.map createLi (formatEvents model.events))
@@ -184,39 +204,20 @@ formatEvents list =
                     [ Dater.formatAll event.name event.start event.end ] ++ formatEvents restOfTheList
 
 
-eventButton : Maybe OAuth.Token -> Dict String String -> Html Msg
-eventButton token calendars =
-    let
-        key =
-            List.head <| Dict.keys calendars
-    in
-        case token of
-            Nothing ->
-                text "You have to be logged in"
-
-            Just token ->
-                case key of
-                    Nothing ->
-                        text "No calendars"
-
-                    Just key ->
-                        case Dict.get key calendars of
-                            Nothing ->
-                                text "Could not find calender"
-
-                            Just calendarID ->
-                                button [ onClick <| GetEvents calendarID ] [ text key ]
-
-
 
 -- COMMANDS
 
 
-eventsCmd : Maybe OAuth.Token -> String -> Cmd Msg
+eventsCmd : Maybe OAuth.Token -> Maybe String -> Cmd Msg
 eventsCmd token calendarID =
     case token of
         Just token ->
-            sendEventRequest token (events calendarID) []
+            case calendarID of
+                Nothing ->
+                    Cmd.none
+
+                Just calendarID ->
+                    sendEventRequest token (events calendarID) []
 
         Nothing ->
             Cmd.none

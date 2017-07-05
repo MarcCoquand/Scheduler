@@ -84,7 +84,7 @@ freeDates events config =
             else
                 freeDates events dayAfter
         else
-            [ meeting "No more dates" (Date.fromTime 0) 9 12 ]
+            []
 
 
 findFreeTimes : List ( String, Event ) -> Config -> List ( String, Event )
