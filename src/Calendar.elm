@@ -130,7 +130,7 @@ findEvents input =
             decodeString (field "items" <| list <| maybe <| at [ "start", "dateTime" ] date) <| input
 
         endTimes =
-            decodeString (field "items" <| list <| maybe <| at [ "start", "dateTime" ] date) <| input
+            decodeString (field "items" <| list <| maybe <| at [ "end", "dateTime" ] date) <| input
     in
         case ids of
             Err errorMessage ->

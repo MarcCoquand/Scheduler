@@ -70,14 +70,14 @@ freeDates events config =
             if dayOfWeekAllowed then
                 case first of
                     Nothing ->
-                        [ meeting "no events left" currentDay 9 12 ]
+                        [ wholeDay "free whole day" config ]
                             ++ freeDates [] dayAfter
 
                     Just ( key, event ) ->
                         if (sameDay currentDay event.start) then
                             (findFreeTimes events config) ++ freeDates events dayAfter
                         else if (isOrder currentDay event.start) then
-                            [ meeting ("events left: " ++ (toString event.start)) currentDay 9 12 ]
+                            [ wholeDay "free whole day" config ]
                                 ++ freeDates events dayAfter
                         else
                             freeDates rest config
@@ -318,6 +318,11 @@ testConfig =
     , weekDays = True
     , weekEnds = False
     }
+
+
+wholeDay : String -> Config -> ( String, Event )
+wholeDay name config =
+    meeting name config.currentDate config.startTime (config.endTime - config.startTime)
 
 
 meeting : String -> Date -> Int -> Int -> ( String, Event )
