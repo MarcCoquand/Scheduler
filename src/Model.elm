@@ -1,4 +1,4 @@
-module Model exposing(..)
+module Model exposing (..)
 
 import Navigation exposing (Location)
 import OAuth exposing (..)
@@ -6,6 +6,7 @@ import Calendar exposing (..)
 import Dict exposing (..)
 import Http exposing (..)
 import Date exposing (..)
+import Dater exposing (..)
 import Time exposing (..)
 
 
@@ -22,9 +23,10 @@ type alias Model =
     , withindate : WithinTime
     }
 
+
 type Msg
     = Nop
-    --| FetchResponse (Result Http.Error String)
+      --| FetchResponse (Result Http.Error String)
     | Token (Result Http.Error OAuth.Token)
     | UrlChange Location
     | GetEvents String
@@ -35,20 +37,29 @@ type Msg
     | ToggleDayInterval TimeOfDay
     | ToggleWeekInterval TimeOfWeek
     | SwitchToDate WithinTime
+    | ShowFreeDates (List ( String, Event )) Dater.Config
+
+
 
 -- Interval during the day, example: 12:50 - 14:30
-type alias TimeInterval = (Time, Time)
 
-type WithinTime 
+
+type alias TimeInterval =
+    ( Time, Time )
+
+
+type WithinTime
     = OneWeek
     | TwoWeeks
     | OneMonth
     | OneYear
-    | CustomDate (Date, Date)
+    | CustomDate ( Date, Date )
+
 
 type TimeOfWeek
     = Weekday
     | Weekend
+
 
 type TimeOfDay
     = Morning
@@ -57,8 +68,9 @@ type TimeOfDay
     | Evening
     | CustomTime TimeInterval
 
+
 type alias SendForm =
-    { email      : Maybe String
-    , startDate  : Maybe Date
-    , endDate    : Maybe Date
+    { email : Maybe String
+    , startDate : Maybe Date
+    , endDate : Maybe Date
     }

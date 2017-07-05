@@ -139,17 +139,17 @@ findEvents input =
             Ok ids ->
                 case startTimes of
                     Err errorMessage ->
-                        [ ( "errorID", errorEvent errorMessage ) ]
+                        []
 
                     Ok startTimes ->
                         case endTimes of
                             Err errorMessage ->
-                                [ ( "errorID", errorEvent errorMessage ) ]
+                                []
 
                             Ok endTimes ->
                                 case names of
                                     Err errorMessage ->
-                                        [ ( "errorID", errorEvent errorMessage ) ]
+                                        []
 
                                     Ok names ->
                                         filterOutNothings <| List.map4 makeEvent ids names startTimes endTimes
@@ -157,14 +157,9 @@ findEvents input =
 
 type alias Event =
     { name : String
-    , start : Maybe Date
-    , end : Maybe Date
+    , start : Date
+    , end : Date
     }
-
-
-errorEvent : String -> Event
-errorEvent message =
-    { name = message, start = Nothing, end = Nothing }
 
 
 filterOutNothings : List (Maybe a) -> List a
@@ -211,5 +206,5 @@ makeEvent id name start end =
                         Just end ->
                             Just
                                 ( id
-                                , { name = name, start = Just start, end = Just end }
+                                , { name = name, start = start, end = end }
                                 )

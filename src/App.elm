@@ -12,6 +12,7 @@ import List exposing (..)
 import Dater exposing (..)
 import Model exposing (..)
 import Create exposing (..)
+import Date exposing (..)
 
 
 -- MODEL
@@ -27,16 +28,16 @@ initSendForm =
 
 init : Location -> ( Model, Cmd Msg )
 init location =
-    ( Model.Model 
-        "No message" 
-        Dict.empty 
-        [] 
-        False 
-        Nothing 
-        location 
+    ( Model.Model
+        "No message"
+        Dict.empty
+        []
+        False
+        Nothing
+        location
         initSendForm
-        [Morning]
-        [Weekday]
+        [ Morning ]
+        [ Weekday ]
         OneWeek
     , OAuth.init googleAuthClient location |> Cmd.map Token
     )
@@ -95,32 +96,40 @@ update msg model =
             )
 
         ToggleDayInterval timeofday ->
-            if (List.member timeofday model.timeconfig) then 
-                ( { model | timeconfig = 
-                    List.filter (\x -> x /= timeofday) model.timeconfig 
+            if (List.member timeofday model.timeconfig) then
+                ( { model
+                    | timeconfig =
+                        List.filter (\x -> x /= timeofday) model.timeconfig
                   }
-                , Cmd.none )
-            else 
+                , Cmd.none
+                )
+            else
                 ( { model | timeconfig = timeofday :: model.timeconfig }, Cmd.none )
 
         ToggleWeekInterval timeofweek ->
-            if (List.member timeofweek model.weekconfig) then 
-                ( { model | weekconfig = 
-                    List.filter (\x -> x /= timeofweek) model.weekconfig 
+            if (List.member timeofweek model.weekconfig) then
+                ( { model
+                    | weekconfig =
+                        List.filter (\x -> x /= timeofweek) model.weekconfig
                   }
-                , Cmd.none 
+                , Cmd.none
                 )
-            else 
+            else
                 ( { model | weekconfig = timeofweek :: model.weekconfig }
-                , Cmd.none 
+                , Cmd.none
                 )
 
         SwitchToDate newDate ->
             ( { model | withindate = newDate }, Cmd.none )
 
+        ShowFreeDates events config ->
+            ( { model | events = Dater.freeDates events config }, Cmd.none )
+
+
 updateMail : SendForm -> String -> SendForm
 updateMail sendForm mail =
     { sendForm | email = Just mail }
+
 
 message404 : String
 message404 =
@@ -150,6 +159,7 @@ view model =
                 , eventButton model.token model.calendars
                 , p [] [ text <| toString model.events ]
                 , renderCreate model
+                , button [ onClick <| ShowFreeDates model.events Dater.testConfig ] [ text "hi" ]
                 , ul [] (List.map createLi (formatEvents model.events))
                 ]
 
@@ -168,30 +178,10 @@ formatEvents list =
         Just ( id, event ) ->
             case tail list of
                 Nothing ->
-                    case event.start of
-                        Just start ->
-                            case event.end of
-                                Just end ->
-                                    [ Dater.formatAll event.name start end ]
-
-                                Nothing ->
-                                    []
-
-                        Nothing ->
-                            []
+                    [ Dater.formatAll event.name event.start event.end ]
 
                 Just restOfTheList ->
-                    case event.start of
-                        Just start ->
-                            case event.end of
-                                Just end ->
-                                    [ Dater.formatAll event.name start end ] ++ formatEvents restOfTheList
-
-                                Nothing ->
-                                    [] ++ formatEvents restOfTheList
-
-                        Nothing ->
-                            [] ++ formatEvents restOfTheList
+                    [ Dater.formatAll event.name event.start event.end ] ++ formatEvents restOfTheList
 
 
 eventButton : Maybe OAuth.Token -> Dict String String -> Html Msg
