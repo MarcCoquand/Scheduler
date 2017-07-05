@@ -4,7 +4,6 @@ import OAuth exposing (..)
 import OAuth.Config exposing (..)
 import Http
 import Json.Decode exposing (..)
-import Dict exposing (..)
 import Date exposing (..)
 import Json.Decode.Extra exposing (..)
 
@@ -89,7 +88,7 @@ queryPair ( key, value ) =
     Http.encodeUri key ++ "=" ++ Http.encodeUri value
 
 
-findCalendars : String -> Dict String String
+findCalendars : String -> List ( String, String )
 findCalendars input =
     let
         ids =
@@ -100,16 +99,16 @@ findCalendars input =
     in
         case ids of
             Err errorMessage ->
-                Dict.fromList []
+                []
 
             --nothing found
             Ok ids ->
                 case names of
-                    Err errorMessage ->
-                        Dict.fromList []
-
                     Ok names ->
-                        Dict.fromList <| List.map2 couple names ids
+                        List.map2 couple names ids
+
+                    Err errorMessage ->
+                        []
 
 
 couple : String -> String -> ( String, String )
@@ -208,3 +207,120 @@ makeEvent id name start end =
                                 ( id
                                 , { name = name, start = start, end = end }
                                 )
+
+
+
+--sorting calendars
+
+
+combineCalendars : List (List ( String, Event )) -> List ( String, Event )
+combineCalendars calendars =
+    let
+        indexOfLowestList =
+            getLowest calendars
+
+        firstEvent =
+            getByIndex indexOfLowestList calendars
+    in
+        case firstEvent of
+            Nothing ->
+                []
+
+            Just firstEvent ->
+                firstEvent ++ (combineCalendars (shortenListWithIndex indexOfLowestList 0 calendars))
+
+
+shortenListWithIndex : Int -> Int -> List (List ( String, Event )) -> List (List ( String, Event ))
+shortenListWithIndex searchIndex index calendars =
+    let
+        rest =
+            Maybe.withDefault [] (List.tail calendars)
+    in
+        case List.head calendars of
+            Nothing ->
+                --should never happened, todo: would cause infinite recursion
+                []
+
+            Just calendar ->
+                if index == searchIndex then
+                    [ (Maybe.withDefault [] (List.tail calendar)) ] ++ rest
+                else
+                    [ calendar ] ++ shortenListWithIndex searchIndex (index + 1) rest
+
+
+getByIndex : Int -> List a -> Maybe a
+getByIndex index list =
+    List.head <| List.drop index list
+
+
+
+-- returns the index of the lowest element --
+
+
+getLowest : List (List ( String, Event )) -> Int
+getLowest lists =
+    let
+        first =
+            List.head lists |> Maybe.andThen List.head
+    in
+        case first of
+            Nothing ->
+                -1
+
+            Just ( key, event ) ->
+                loopGetLowest event.start 0 0 lists
+
+
+loopGetLowest : Date -> Int -> Int -> List (List ( String, Event )) -> Int
+loopGetLowest lowest lowestIndex index lists =
+    let
+        first =
+            List.head lists |> Maybe.andThen List.head
+
+        rest =
+            Maybe.withDefault [] (List.tail lists)
+
+        toBeat =
+            Date.toTime lowest
+    in
+        case first of
+            Nothing ->
+                lowestIndex
+
+            Just ( key, event ) ->
+                if (Date.toTime event.start) < toBeat then
+                    loopGetLowest event.start index (index + 1) rest
+                else
+                    loopGetLowest lowest lowestIndex (index + 1) rest
+
+
+-- also sorts them if they were idividually sorted before --
+
+combineTwoCalenders : List (String, Event) -> List (String, Event) -> List (String, Event)
+combineTwoCalenders list1 list2 =
+    let
+        first1 =
+            List.head list1
+        first2 =
+            List.head list2
+
+        rest1 = 
+            Maybe.withDefault [] (List.head list1)
+
+        rest2 =
+            Maybe.withDefault [] (List.head list2)
+    in
+        case first1 of
+            Nothing ->
+                list2
+            Just (id1, event1) ->
+                case first2 of
+                    Nothing ->
+                        list1
+                    Just (id2, event2)
+                        if (Date.toTime event1.start < Date.toTime event2.start) then
+                            (id1,event1) ++ combineTwoCalenders rest1 list2
+                        else
+                            (id2, event2) ++ combineTwoCalenders list1 rest2
+
+            
