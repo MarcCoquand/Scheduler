@@ -242,3 +242,16 @@ combineTwoCalenders list1 list2 =
                             [ ( id1, event1 ) ] ++ combineTwoCalenders rest1 list2
                         else
                             [ ( id2, event2 ) ] ++ combineTwoCalenders list1 rest2
+
+
+future : Date -> List ( String, Event ) -> List ( String, Event )
+future currentDate events =
+    case List.head events of
+        Nothing ->
+            []
+
+        Just ( id, event ) ->
+            if (Date.toTime event.end < Date.toTime currentDate) then
+                future currentDate <| Maybe.withDefault [] (List.tail events)
+            else
+                events

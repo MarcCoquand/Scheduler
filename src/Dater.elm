@@ -1,9 +1,10 @@
-module Dater exposing (formatAll, testConfig, freeDates, Config, EasyDate)
+module Dater exposing (formatAll, testConfig, freeDates, EasyDate, oneYearAgo)
 
 import Date exposing (..)
 import Time exposing (..)
 import Maybe exposing (andThen)
 import Calendar exposing (Event)
+import Configuration exposing (..)
 
 
 --returns the difference between the two dates in minutes
@@ -16,19 +17,6 @@ type alias EasyDate =
     , timeRange : String
     , d1 : Date
     , d2 : Date
-    }
-
-
-type alias Config =
-    { currentDate : Date
-    , endDate : Date
-    , startTime : Int --hour
-    , endTime : Int --hour
-    , length : Int --hour
-    , possibleTimes :
-        List Int
-    , weekDays : Bool
-    , weekEnds : Bool
     }
 
 
@@ -57,16 +45,16 @@ freeDates events config =
         rest =
             Maybe.withDefault [] (List.tail events)
 
-        currentDay =
-            config.currentDate
+        ( currentDay, endDay ) =
+            Configuration.extractDates config.today config.withinDates
 
         dayAfter =
-            { config | currentDate = (nextDay currentDay) }
+            { config | withinDates = CustomDate ( nextDay currentDay, endDay ) }
 
         dayOfWeekAllowed =
             (config.weekDays || isWeekEnd currentDay) && (config.weekEnds || isWeekDay currentDay)
     in
-        if (isOrder currentDay config.endDate) then
+        if (isOrder currentDay endDay) then
             if dayOfWeekAllowed then
                 case first of
                     Nothing ->
@@ -90,8 +78,8 @@ freeDates events config =
 findFreeTimes : List ( String, Event ) -> Config -> List ( String, Event )
 findFreeTimes events config =
     let
-        day =
-            config.currentDate
+        ( day, _ ) =
+            Configuration.extractDates config.today config.withinDates
 
         possibleTimes =
             config.possibleTimes
@@ -306,13 +294,16 @@ testTime =
 
 testConfig : Config
 testConfig =
-    { currentDate = Date.fromTime testTime
-    , endDate =
-        Date.fromTime <|
-            testTime
-                + (2 * week + 5 * day)
-    , startTime = 8
-    , endTime = 17
+    { today = Date.fromTime testTime
+    , withinDates =
+        CustomDate
+            ( (Date.fromTime testTime)
+            , (Date.fromTime <|
+                testTime
+                    + (2 * week + 5 * day)
+              )
+            )
+    , withinTimes = Morning
     , length = 2
     , possibleTimes = getPossibleTimes 8 17 2
     , weekDays = True
@@ -322,7 +313,14 @@ testConfig =
 
 wholeDay : String -> Config -> ( String, Event )
 wholeDay name config =
-    meeting name config.currentDate config.startTime (config.endTime - config.startTime)
+    let
+        ( startDate, endDate ) =
+            Configuration.extractDates config.today <| config.withinDates
+
+        ( startTime, endTime ) =
+            Configuration.extractTimes config.withinTimes
+    in
+        meeting name startDate startTime (endTime - startTime)
 
 
 meeting : String -> Date -> Int -> Int -> ( String, Event )
@@ -393,6 +391,11 @@ isWeekEnd date =
 isWeekDay : Date -> Bool
 isWeekDay date =
     not <| isWeekEnd date
+
+
+oneYearAgo : Date -> Date
+oneYearAgo date =
+    Date.fromTime <| Date.toTime date - 365 * day
 
 
 diffMinutes : Date -> Date -> Int

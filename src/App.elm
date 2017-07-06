@@ -13,6 +13,7 @@ import Model exposing (..)
 import Create exposing (..)
 import Date exposing (..)
 import Task exposing (..)
+import Configuration exposing (..)
 
 
 -- MODEL
@@ -23,6 +24,18 @@ initSendForm =
     { email = Nothing
     , startDate = Nothing
     , endDate = Nothing
+    }
+
+
+initConfig : Configuration.Config
+initConfig =
+    { today = Date.fromTime 0
+    , withinDates = OneWeek
+    , withinTimes = Afternoon
+    , length = 3
+    , possibleTimes = []
+    , weekDays = True
+    , weekEnds = False
     }
 
 
@@ -42,10 +55,7 @@ init location =
         Nothing
         location
         initSendForm
-        [ Morning ]
-        [ Weekday ]
-        OneWeek
-        (Date.fromTime 0)
+        initConfig
     , OAuth.init googleAuthClient location |> Cmd.map Token
     )
 
@@ -75,7 +85,9 @@ update msg model =
             ( { model | message = toString err }, Cmd.none )--}
         --Login token
         Token (Ok t) ->
-            ( { model | token = Just t }, calendarCmd (Just t) )
+            ( { model | token = Just t }
+            , Cmd.batch ([ calendarCmd (Just t), Task.perform UpdateTime Date.now ])
+            )
 
         Token (Err err) ->
             ( { model | message = toString err }, Cmd.none )
@@ -96,9 +108,10 @@ update msg model =
             , eventsCmd model.token (List.head (extractIDs calendars))
             )
 
+        --I am using a year ago as now because I do not have any events planned
         ShowEvents events ->
             ( { model
-                | events = Calendar.combineTwoCalenders events model.events
+                | events = Calendar.future (Dater.oneYearAgo model.config.today) <| Calendar.combineTwoCalenders events model.events
                 , notYetFetchedEvents = quickTail model.notYetFetchedEvents
               }
             , eventsCmd model.token (List.head model.notYetFetchedEvents)
@@ -109,32 +122,18 @@ update msg model =
             , Cmd.none
             )
 
-        ToggleDayInterval timeofday ->
-            if (List.member timeofday model.timeconfig) then
-                ( { model
-                    | timeconfig =
-                        List.filter (\x -> x /= timeofday) model.timeconfig
-                  }
-                , Cmd.none
-                )
-            else
-                ( { model | timeconfig = timeofday :: model.timeconfig }, Cmd.none )
+        ToggleDayInterval timeOfDay ->
+            ( { model
+                | config = Configuration.setDayInterval timeOfDay model.config
+              }
+            , Cmd.none
+            )
 
-        ToggleWeekInterval timeofweek ->
-            if (List.member timeofweek model.weekconfig) then
-                ( { model
-                    | weekconfig =
-                        List.filter (\x -> x /= timeofweek) model.weekconfig
-                  }
-                , Cmd.none
-                )
-            else
-                ( { model | weekconfig = timeofweek :: model.weekconfig }
-                , Cmd.none
-                )
+        ToggleWeekInterval config ->
+            ( { model | config = config }, Cmd.none )
 
-        SwitchToDate newDate ->
-            ( { model | withindate = newDate }, Cmd.none )
+        SwitchToDate withinDate ->
+            ( { model | config = Configuration.setDateRange withinDate model.config }, Cmd.none )
 
         ShowFreeDates events config ->
             ( { model | filteredEvents = Dater.freeDates events config }, Cmd.none )
@@ -143,7 +142,7 @@ update msg model =
             ( model, Task.perform UpdateTime Date.now )
 
         UpdateTime date ->
-            ( { model | currentDate = date }, Cmd.none )
+            ( { model | config = Configuration.setToday date model.config }, Cmd.none )
 
 
 quickTail : List a -> List a
@@ -184,11 +183,11 @@ view model =
         Just token ->
             div []
                 [ h1 [] [ text "Quick meeting scheduler!" ]
-                , button [ onClick RequestCurrentTime ] [ text <| toString model.currentDate ]
+                , button [ onClick RequestCurrentTime ] [ text <| toString model.config.today ]
                 , button [ onClick GetCalendars ] [ text "click to load calendars" ]
                 , p [] [ text <| model.message ]
                 , renderCreate model
-                , button [ onClick <| ShowFreeDates model.events Dater.testConfig ] [ text "hi" ]
+                , button [ onClick <| ShowFreeDates model.events model.config ] [ text "hi" ]
                 , div [ class "horizontal" ]
                     [ ul [] (List.map createLi (formatEvents model.events))
                     , ul [] (List.map createLi (formatEvents model.filteredEvents))

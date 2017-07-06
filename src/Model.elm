@@ -7,6 +7,7 @@ import Http exposing (..)
 import Date exposing (..)
 import Dater exposing (..)
 import Time exposing (..)
+import Configuration exposing (..)
 
 
 type alias Model =
@@ -19,10 +20,7 @@ type alias Model =
     , token : Maybe OAuth.Token
     , route : Location
     , sendform : SendForm
-    , timeconfig : List TimeOfDay
-    , weekconfig : List TimeOfWeek
-    , withindate : WithinTime
-    , currentDate : Date
+    , config : Configuration.Config
     }
 
 
@@ -36,40 +34,15 @@ type Msg
     | ShowEvents (List ( String, Calendar.Event ))
     | NewMail String
     | ToggleDayInterval TimeOfDay
-    | ToggleWeekInterval TimeOfWeek
-    | SwitchToDate WithinTime
-    | ShowFreeDates (List ( String, Event )) Dater.Config
+    | ToggleWeekInterval Configuration.Config
+    | SwitchToDate Configuration.WithinDates
+    | ShowFreeDates (List ( String, Event )) Configuration.Config
     | RequestCurrentTime
     | UpdateTime Date
 
 
 
 -- Interval during the day, example: 12:50 - 14:30
-
-
-type alias TimeInterval =
-    ( Time, Time )
-
-
-type WithinTime
-    = OneWeek
-    | TwoWeeks
-    | OneMonth
-    | OneYear
-    | CustomDate ( Date, Date )
-
-
-type TimeOfWeek
-    = Weekday
-    | Weekend
-
-
-type TimeOfDay
-    = Morning
-    | Lunch
-    | Afternoon
-    | Evening
-    | CustomTime TimeInterval
 
 
 type alias SendForm =
