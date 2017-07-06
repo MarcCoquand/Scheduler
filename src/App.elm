@@ -1,7 +1,7 @@
 module App exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (href)
+import Html.Attributes exposing (href, class)
 import Html.Events exposing (..)
 import Http
 import Navigation exposing (Location)
@@ -11,6 +11,8 @@ import List exposing (..)
 import Dater exposing (..)
 import Model exposing (..)
 import Create exposing (..)
+import Date exposing (..)
+import Task exposing (..)
 
 
 -- MODEL
@@ -43,6 +45,7 @@ init location =
         [ Morning ]
         [ Weekday ]
         OneWeek
+        (Date.fromTime 0)
     , OAuth.init googleAuthClient location |> Cmd.map Token
     )
 
@@ -134,7 +137,13 @@ update msg model =
             ( { model | withindate = newDate }, Cmd.none )
 
         ShowFreeDates events config ->
-            ( { model | events = Dater.freeDates events config }, Cmd.none )
+            ( { model | filteredEvents = Dater.freeDates events config }, Cmd.none )
+
+        RequestCurrentTime ->
+            ( model, Task.perform UpdateTime Date.now )
+
+        UpdateTime date ->
+            ( { model | currentDate = date }, Cmd.none )
 
 
 quickTail : List a -> List a
@@ -175,12 +184,15 @@ view model =
         Just token ->
             div []
                 [ h1 [] [ text "Quick meeting scheduler!" ]
-                , p [] [ text <| toString model.token ]
+                , button [ onClick RequestCurrentTime ] [ text <| toString model.currentDate ]
                 , button [ onClick GetCalendars ] [ text "click to load calendars" ]
                 , p [] [ text <| model.message ]
                 , renderCreate model
                 , button [ onClick <| ShowFreeDates model.events Dater.testConfig ] [ text "hi" ]
-                , ul [] (List.map createLi (formatEvents model.events))
+                , div [ class "horizontal" ]
+                    [ ul [] (List.map createLi (formatEvents model.events))
+                    , ul [] (List.map createLi (formatEvents model.filteredEvents))
+                    ]
                 ]
 
 

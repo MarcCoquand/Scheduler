@@ -22,6 +22,7 @@ type alias Model =
     , timeconfig : List TimeOfDay
     , weekconfig : List TimeOfWeek
     , withindate : WithinTime
+    , currentDate : Date
     }
 
 
@@ -38,6 +39,8 @@ type Msg
     | ToggleWeekInterval TimeOfWeek
     | SwitchToDate WithinTime
     | ShowFreeDates (List ( String, Event )) Dater.Config
+    | RequestCurrentTime
+    | UpdateTime Date
 
 
 
