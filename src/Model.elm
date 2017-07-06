@@ -43,7 +43,6 @@ type WithinTime
     = OneWeek
     | TwoWeeks
     | OneMonth
-    | OneYear
     | CustomDate (Date, Date)
 
 type TimeOfWeek

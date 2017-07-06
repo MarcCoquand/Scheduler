@@ -63,8 +63,6 @@ renderDateInterval model =
             (checkWithinDate model TwoWeeks)
         , radio (SwitchToDate OneMonth) "One month" 
             (checkWithinDate model OneMonth)
-        , radio (SwitchToDate OneYear) "One year" 
-            (checkWithinDate model OneYear)
         , radio (SwitchToDate <| CustomDate ((Date.fromTime 0), (Date.fromTime 0)))
             "Select date" (checkWithinDate model 
                 <| CustomDate ((Date.fromTime 0), (Date.fromTime 0)))
@@ -73,32 +71,32 @@ renderDateInterval model =
 
 renderCreate : Model -> Html Msg
 renderCreate model =
-    div [] 
+    div [(class "paper-container")] 
         [ div [] 
-            [ div [] 
+            [ div [(class "create-header")] 
                 [ h3 [] [text "Book a meeting with "]
                 , input 
-                    [ placeholder "Example@email.com"
+                    [ placeholder "example@email.com"
                     , onInput NewMail
                     ] []
                 ]
-            , div [] 
-                [ text "at "
+            , div [(class "input-container")] 
+                [ h3 [] [text "At which time?"]
                 , renderDayOfTime model
                 ]
-            , div []
-                [ text "on a "
+            , div [(class "input-container")]
+                [ h3 [] [text "On which days?"]
                 , renderTimeOfWeek model
                 ]
-            , div []
-                [ text "in "
+            , div [(class "input-container")]
+                [ h3 [] [text "How soon?"]
                 , renderDateInterval model
                 ]
             , div [] 
                 [ text "Suggested dates: " 
                 , text "ADD DATES HERE"
                 ]
-            , div []
+            , div [(class "input-container")]
                 [ button [] [text "Send"] ]
             ]
         ]
