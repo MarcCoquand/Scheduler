@@ -1,17 +1,18 @@
 module App exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (href)
+import Html.Attributes exposing (href, class)
 import Html.Events exposing (..)
 import Http
 import Navigation exposing (Location)
 import Calendar exposing (..)
 import OAuth exposing (..)
-import Dict exposing (..)
 import List exposing (..)
 import Dater exposing (..)
 import Model exposing (..)
 import Create exposing (..)
+import Date exposing (..)
+import Task exposing (..)
 
 
 -- MODEL
@@ -27,17 +28,24 @@ initSendForm =
 
 init : Location -> ( Model, Cmd Msg )
 init location =
-    ( Model.Model 
-        "No message" 
-        Dict.empty 
-        [] 
-        False 
-        Nothing 
-        location 
+    ( Model.Model
+        "No message"
+        []
+        --calenders, will be fetched from google
+        []
+        --notYetFetchedEvents, those calenders that have not been processed into events
+        []
+        --events, all appointments
+        []
+        --filtered events´
+        False
+        Nothing
+        location
         initSendForm
-        [Morning]
-        [Weekday]
+        [ Morning ]
+        [ Weekday ]
         OneWeek
+        (Date.fromTime 0)
     , OAuth.init googleAuthClient location |> Cmd.map Token
     )
 
@@ -80,14 +88,21 @@ update msg model =
         GetCalendars ->
             ( model, calendarCmd model.token )
 
-        GetEvents calendarID ->
-            ( model, eventsCmd model.token calendarID )
-
         ShowCalendars calendars ->
-            ( { model | calendars = calendars }, Cmd.none )
+            ( { model
+                | calendars = calendars
+                , notYetFetchedEvents = quickTail (extractIDs calendars)
+              }
+            , eventsCmd model.token (List.head (extractIDs calendars))
+            )
 
         ShowEvents events ->
-            ( { model | events = events }, Cmd.none )
+            ( { model
+                | events = Calendar.combineTwoCalenders events model.events
+                , notYetFetchedEvents = quickTail model.notYetFetchedEvents
+              }
+            , eventsCmd model.token (List.head model.notYetFetchedEvents)
+            )
 
         NewMail mail ->
             ( { model | sendform = updateMail model.sendform mail }
@@ -95,32 +110,56 @@ update msg model =
             )
 
         ToggleDayInterval timeofday ->
-            if (List.member timeofday model.timeconfig) then 
-                ( { model | timeconfig = 
-                    List.filter (\x -> x /= timeofday) model.timeconfig 
+            if (List.member timeofday model.timeconfig) then
+                ( { model
+                    | timeconfig =
+                        List.filter (\x -> x /= timeofday) model.timeconfig
                   }
-                , Cmd.none )
-            else 
+                , Cmd.none
+                )
+            else
                 ( { model | timeconfig = timeofday :: model.timeconfig }, Cmd.none )
 
         ToggleWeekInterval timeofweek ->
-            if (List.member timeofweek model.weekconfig) then 
-                ( { model | weekconfig = 
-                    List.filter (\x -> x /= timeofweek) model.weekconfig 
+            if (List.member timeofweek model.weekconfig) then
+                ( { model
+                    | weekconfig =
+                        List.filter (\x -> x /= timeofweek) model.weekconfig
                   }
-                , Cmd.none 
+                , Cmd.none
                 )
-            else 
+            else
                 ( { model | weekconfig = timeofweek :: model.weekconfig }
-                , Cmd.none 
+                , Cmd.none
                 )
 
         SwitchToDate newDate ->
             ( { model | withindate = newDate }, Cmd.none )
 
+        ShowFreeDates events config ->
+            ( { model | filteredEvents = Dater.freeDates events config }, Cmd.none )
+
+        RequestCurrentTime ->
+            ( model, Task.perform UpdateTime Date.now )
+
+        UpdateTime date ->
+            ( { model | currentDate = date }, Cmd.none )
+
+
+quickTail : List a -> List a
+quickTail list =
+    Maybe.withDefault [] <| List.tail list
+
+
+extractIDs : List ( String, String ) -> List String
+extractIDs list =
+    (List.map (\( name, id ) -> id) list)
+
+
 updateMail : SendForm -> String -> SendForm
 updateMail sendForm mail =
     { sendForm | email = Just mail }
+
 
 message404 : String
 message404 =
@@ -145,12 +184,15 @@ view model =
         Just token ->
             div []
                 [ h1 [] [ text "Quick meeting scheduler!" ]
-                , p [] [ text <| toString model.token ]
+                , button [ onClick RequestCurrentTime ] [ text <| toString model.currentDate ]
                 , button [ onClick GetCalendars ] [ text "click to load calendars" ]
-                , eventButton model.token model.calendars
-                , p [] [ text <| toString model.events ]
+                , p [] [ text <| model.message ]
                 , renderCreate model
-                , ul [] (List.map createLi (formatEvents model.events))
+                , button [ onClick <| ShowFreeDates model.events Dater.testConfig ] [ text "hi" ]
+                , div [ class "horizontal" ]
+                    [ ul [] (List.map createLi (formatEvents model.events))
+                    , ul [] (List.map createLi (formatEvents model.filteredEvents))
+                    ]
                 ]
 
 
@@ -168,65 +210,26 @@ formatEvents list =
         Just ( id, event ) ->
             case tail list of
                 Nothing ->
-                    case event.start of
-                        Just start ->
-                            case event.end of
-                                Just end ->
-                                    [ Dater.formatAll event.name start end ]
-
-                                Nothing ->
-                                    []
-
-                        Nothing ->
-                            []
+                    [ Dater.formatAll event.name event.start event.end ]
 
                 Just restOfTheList ->
-                    case event.start of
-                        Just start ->
-                            case event.end of
-                                Just end ->
-                                    [ Dater.formatAll event.name start end ] ++ formatEvents restOfTheList
-
-                                Nothing ->
-                                    [] ++ formatEvents restOfTheList
-
-                        Nothing ->
-                            [] ++ formatEvents restOfTheList
-
-
-eventButton : Maybe OAuth.Token -> Dict String String -> Html Msg
-eventButton token calendars =
-    let
-        key =
-            List.head <| Dict.keys calendars
-    in
-        case token of
-            Nothing ->
-                text "You have to be logged in"
-
-            Just token ->
-                case key of
-                    Nothing ->
-                        text "No calendars"
-
-                    Just key ->
-                        case Dict.get key calendars of
-                            Nothing ->
-                                text "Could not find calender"
-
-                            Just calendarID ->
-                                button [ onClick <| GetEvents calendarID ] [ text key ]
+                    [ Dater.formatAll event.name event.start event.end ] ++ formatEvents restOfTheList
 
 
 
 -- COMMANDS
 
 
-eventsCmd : Maybe OAuth.Token -> String -> Cmd Msg
+eventsCmd : Maybe OAuth.Token -> Maybe String -> Cmd Msg
 eventsCmd token calendarID =
     case token of
         Just token ->
-            sendEventRequest token (events calendarID) []
+            case calendarID of
+                Nothing ->
+                    Cmd.none
+
+                Just calendarID ->
+                    sendEventRequest token (events calendarID) []
 
         Nothing ->
             Cmd.none

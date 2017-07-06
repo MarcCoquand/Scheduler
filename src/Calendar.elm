@@ -4,7 +4,6 @@ import OAuth exposing (..)
 import OAuth.Config exposing (..)
 import Http
 import Json.Decode exposing (..)
-import Dict exposing (..)
 import Date exposing (..)
 import Json.Decode.Extra exposing (..)
 
@@ -89,7 +88,7 @@ queryPair ( key, value ) =
     Http.encodeUri key ++ "=" ++ Http.encodeUri value
 
 
-findCalendars : String -> Dict String String
+findCalendars : String -> List ( String, String )
 findCalendars input =
     let
         ids =
@@ -100,16 +99,16 @@ findCalendars input =
     in
         case ids of
             Err errorMessage ->
-                Dict.fromList []
+                []
 
             --nothing found
             Ok ids ->
                 case names of
-                    Err errorMessage ->
-                        Dict.fromList []
-
                     Ok names ->
-                        Dict.fromList <| List.map2 couple names ids
+                        List.map2 couple names ids
+
+                    Err errorMessage ->
+                        []
 
 
 couple : String -> String -> ( String, String )
@@ -130,7 +129,7 @@ findEvents input =
             decodeString (field "items" <| list <| maybe <| at [ "start", "dateTime" ] date) <| input
 
         endTimes =
-            decodeString (field "items" <| list <| maybe <| at [ "start", "dateTime" ] date) <| input
+            decodeString (field "items" <| list <| maybe <| at [ "end", "dateTime" ] date) <| input
     in
         case ids of
             Err errorMessage ->
@@ -139,17 +138,17 @@ findEvents input =
             Ok ids ->
                 case startTimes of
                     Err errorMessage ->
-                        [ ( "errorID", errorEvent errorMessage ) ]
+                        []
 
                     Ok startTimes ->
                         case endTimes of
                             Err errorMessage ->
-                                [ ( "errorID", errorEvent errorMessage ) ]
+                                []
 
                             Ok endTimes ->
                                 case names of
                                     Err errorMessage ->
-                                        [ ( "errorID", errorEvent errorMessage ) ]
+                                        []
 
                                     Ok names ->
                                         filterOutNothings <| List.map4 makeEvent ids names startTimes endTimes
@@ -157,14 +156,9 @@ findEvents input =
 
 type alias Event =
     { name : String
-    , start : Maybe Date
-    , end : Maybe Date
+    , start : Date
+    , end : Date
     }
-
-
-errorEvent : String -> Event
-errorEvent message =
-    { name = message, start = Nothing, end = Nothing }
 
 
 filterOutNothings : List (Maybe a) -> List a
@@ -211,5 +205,40 @@ makeEvent id name start end =
                         Just end ->
                             Just
                                 ( id
-                                , { name = name, start = Just start, end = Just end }
+                                , { name = name, start = start, end = end }
                                 )
+
+
+
+-- combines two calendars and keeps sorting inteact--
+
+
+combineTwoCalenders : List ( String, Event ) -> List ( String, Event ) -> List ( String, Event )
+combineTwoCalenders list1 list2 =
+    let
+        first1 =
+            List.head list1
+
+        first2 =
+            List.head list2
+
+        rest1 =
+            Maybe.withDefault [] (List.tail list1)
+
+        rest2 =
+            Maybe.withDefault [] (List.tail list2)
+    in
+        case first1 of
+            Nothing ->
+                list2
+
+            Just ( id1, event1 ) ->
+                case first2 of
+                    Nothing ->
+                        list1
+
+                    Just ( id2, event2 ) ->
+                        if (Date.toTime event1.start < Date.toTime event2.start) then
+                            [ ( id1, event1 ) ] ++ combineTwoCalenders rest1 list2
+                        else
+                            [ ( id2, event2 ) ] ++ combineTwoCalenders list1 rest2
