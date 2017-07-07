@@ -31,7 +31,7 @@ initConfig : Configuration.Config
 initConfig =
     { today = Date.fromTime 0
     , withinDates = OneWeek
-    , withinTimes = Afternoon
+    , withinTimes = [ Afternoon ]
     , length = 3
     , possibleTimes = []
     , weekDays = True
@@ -123,17 +123,26 @@ update msg model =
             )
 
         ToggleDayInterval timeOfDay ->
-            ( { model
-                | config = Configuration.setDayInterval timeOfDay model.config
-              }
-            , Cmd.none
-            )
+            let
+                config =
+                    Configuration.setTimeRange timeOfDay model.config
+            in
+                ( { model
+                    | config = config
+                    , filteredEvents = Dater.freeDates model.events config
+                  }
+                , Cmd.none
+                )
 
         ToggleWeekInterval config ->
-            ( { model | config = config }, Cmd.none )
+            ( { model | config = config, filteredEvents = Dater.freeDates model.events config }, Cmd.none )
 
         SwitchToDate withinDate ->
-            ( { model | config = Configuration.setDateRange withinDate model.config }, Cmd.none )
+            let
+                config =
+                    Configuration.setDateRange withinDate model.config
+            in
+                ( { model | config = config, filteredEvents = Dater.freeDates model.events config }, Cmd.none )
 
         ShowFreeDates events config ->
             ( { model | filteredEvents = Dater.freeDates events config }, Cmd.none )
@@ -183,36 +192,10 @@ view model =
         Just token ->
             div []
                 [ h1 [] [ text "Quick meeting scheduler!" ]
-                , button [ onClick RequestCurrentTime ] [ text <| toString model.config.today ]
-                , button [ onClick GetCalendars ] [ text "click to load calendars" ]
-                , p [] [ text <| model.message ]
-                , renderCreate model
-                , button [ onClick <| ShowFreeDates model.events model.config ] [ text "hi" ]
-                , div [ class "horizontal" ]
-                    [ ul [] (List.map createLi (formatEvents model.events))
-                    , ul [] (List.map createLi (formatEvents model.filteredEvents))
-                    ]
+                , text <| toString model.config.withinTimes
+                , div []
+                    [ Create.renderCreate model ]
                 ]
-
-
-createLi : EasyDate -> Html Msg
-createLi content =
-    li [] [ text content.name, br [] [], text content.dateRange, br [] [], text content.timeRange ]
-
-
-formatEvents : List ( String, Event ) -> List EasyDate
-formatEvents list =
-    case head list of
-        Nothing ->
-            []
-
-        Just ( id, event ) ->
-            case tail list of
-                Nothing ->
-                    [ Dater.formatAll event.name event.start event.end ]
-
-                Just restOfTheList ->
-                    [ Dater.formatAll event.name event.start event.end ] ++ formatEvents restOfTheList
 
 
 

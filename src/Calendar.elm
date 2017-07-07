@@ -6,6 +6,7 @@ import Http
 import Json.Decode exposing (..)
 import Date exposing (..)
 import Json.Decode.Extra exposing (..)
+import Configuration exposing (Event)
 
 
 googleAuthClient : OAuth.Client
@@ -152,13 +153,6 @@ findEvents input =
 
                                     Ok names ->
                                         filterOutNothings <| List.map4 makeEvent ids names startTimes endTimes
-
-
-type alias Event =
-    { name : String
-    , start : Date
-    , end : Date
-    }
 
 
 filterOutNothings : List (Maybe a) -> List a

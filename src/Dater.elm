@@ -1,9 +1,8 @@
-module Dater exposing (formatAll, testConfig, freeDates, EasyDate, oneYearAgo)
+module Dater exposing (formatAll, freeDates, EasyDate, oneYearAgo)
 
 import Date exposing (..)
 import Time exposing (..)
 import Maybe exposing (andThen)
-import Calendar exposing (Event)
 import Configuration exposing (..)
 
 
@@ -20,24 +19,70 @@ type alias EasyDate =
     }
 
 
+pickThree : List ( String, Event ) -> List ( String, Event )
+pickThree list =
+    let
+        length =
+            List.length list
 
-{--The big one, filtering out dates where the user is occupied
-    TODO:
-        Check within a date, the user might be free in the morning
-            (refactor that part out as own function for simiplicity and clarity)
-        Extend config to reflect all user choices
-            ✓ startDate
-            ✓ endDate
-            ✓ weekends, weekdays
-            ✓ timeOfDay
-            ✓ length of meeting
+        t =
+            Date.fromTime 0
 
-        Maybe make the algorithm lazy so we can handle if the user types in several years of potential work
---}
+        msg =
+            toString length
+    in
+        takeEvery 0 (length // 3) list
+
+
+calculateLength : Int -> List a -> Int
+calculateLength index list =
+    case List.head list of
+        Nothing ->
+            index
+
+        Just a ->
+            case List.tail list of
+                Nothing ->
+                    index + 1
+
+                Just rest ->
+                    calculateLength (index + 1) rest
+
+
+takeEvery : Int -> Int -> List a -> List a
+takeEvery index nth list =
+    if (index >= nth - 1) then
+        case List.head list of
+            Nothing ->
+                []
+
+            Just first ->
+                case List.tail list of
+                    Nothing ->
+                        [ first ]
+
+                    Just rest ->
+                        [ first ] ++ takeEvery 0 nth rest
+    else
+        case List.tail list of
+            Nothing ->
+                []
+
+            Just rest ->
+                takeEvery (index + 1) nth rest
+
+
+
+--The big one, filtering out dates where the user is occupied
 
 
 freeDates : List ( String, Event ) -> Config -> List ( String, Event )
 freeDates events config =
+    pickThree <| freeDatesLoop events config
+
+
+freeDatesLoop : List ( String, Event ) -> Config -> List ( String, Event )
+freeDatesLoop events config =
     let
         first =
             List.head events
@@ -58,19 +103,17 @@ freeDates events config =
             if dayOfWeekAllowed then
                 case first of
                     Nothing ->
-                        [ wholeDay "free whole day" config ]
-                            ++ freeDates [] dayAfter
+                        (findFreeTimes events config) ++ freeDatesLoop events dayAfter
 
                     Just ( key, event ) ->
                         if (sameDay currentDay event.start) then
-                            (findFreeTimes events config) ++ freeDates events dayAfter
+                            (findFreeTimes events config) ++ freeDatesLoop events dayAfter
                         else if (isOrder currentDay event.start) then
-                            [ wholeDay "free whole day" config ]
-                                ++ freeDates events dayAfter
+                            (findFreeTimes events config) ++ freeDatesLoop events dayAfter
                         else
-                            freeDates rest config
+                            freeDatesLoop rest config
             else
-                freeDates events dayAfter
+                freeDatesLoop events dayAfter
         else
             []
 
@@ -190,14 +233,6 @@ getOnlyToday events =
                             [ ( key, event ) ]
 
 
-getPossibleTimes : Int -> Int -> Int -> List Int
-getPossibleTimes start end length =
-    if (start > end - length) then
-        []
-    else
-        [ start ] ++ getPossibleTimes (start + 1) end length
-
-
 
 --Formatting
 
@@ -283,34 +318,6 @@ week =
     (7 * day)
 
 
-
---test material
-
-
-testTime : Float
-testTime =
-    (47 * 52 * week) + (21 * week)
-
-
-testConfig : Config
-testConfig =
-    { today = Date.fromTime testTime
-    , withinDates =
-        CustomDate
-            ( (Date.fromTime testTime)
-            , (Date.fromTime <|
-                testTime
-                    + (2 * week + 5 * day)
-              )
-            )
-    , withinTimes = Morning
-    , length = 2
-    , possibleTimes = getPossibleTimes 8 17 2
-    , weekDays = True
-    , weekEnds = False
-    }
-
-
 wholeDay : String -> Config -> ( String, Event )
 wholeDay name config =
     let
@@ -336,7 +343,7 @@ meeting name date startHour length =
             setTimeAtDate date <| toFloat (startHour + length)
     in
         ( "noID"
-        , Calendar.Event name start end
+        , Configuration.Event name start end
         )
 
 

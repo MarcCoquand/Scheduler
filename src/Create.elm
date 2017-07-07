@@ -7,6 +7,8 @@ import Model exposing (..)
 import Html.Events exposing (onInput)
 import Date exposing (..)
 import Configuration exposing (..)
+import Dater exposing (..)
+import List exposing (..)
 
 
 -- VIEW
@@ -32,11 +34,17 @@ checkbox msg name check =
 renderDayOfTime : Model -> Html Msg
 renderDayOfTime model =
     div []
-        [ checkbox (ToggleDayInterval Morning) "Morning" True
-        , checkbox (ToggleDayInterval Afternoon) "Afternoon" False
-        , checkbox (ToggleDayInterval Lunch) "Lunch" False
+        [ timeOfDayBox "Morning" Morning model.config.withinTimes
+        , timeOfDayBox "Lunch" Lunch model.config.withinTimes
+        , timeOfDayBox "Afternoon" Afternoon model.config.withinTimes
+        , timeOfDayBox "Evening" Evening model.config.withinTimes
         , checkbox Nop "Custom" False
         ]
+
+
+timeOfDayBox : String -> TimeOfDay -> List TimeOfDay -> Html Msg
+timeOfDayBox name tod list =
+    checkbox (ToggleDayInterval tod) name (List.member tod list)
 
 
 renderTimeOfWeek : Config -> Html Msg
@@ -75,9 +83,6 @@ renderDateInterval model =
             , radio (SwitchToDate OneMonth)
                 "One month"
                 (checkWithinDate model OneMonth)
-            , radio (SwitchToDate OneYear)
-                "One year"
-                (checkWithinDate model OneYear)
             , radio (SwitchToDate <| CustomDate ( (Date.fromTime 0), (Date.fromTime 0) ))
                 "Select date"
                 (checkWithinDate model <|
@@ -87,35 +92,55 @@ renderDateInterval model =
         ]
 
 
+createLi : EasyDate -> Html Msg
+createLi content =
+    li [] [ text content.name, br [] [], text content.dateRange, br [] [], text content.timeRange ]
+
+
+formatEvents : List ( String, Event ) -> List EasyDate
+formatEvents list =
+    case List.head list of
+        Nothing ->
+            []
+
+        Just ( id, event ) ->
+            case List.tail list of
+                Nothing ->
+                    [ Dater.formatAll event.name event.start event.end ]
+
+                Just restOfTheList ->
+                    [ Dater.formatAll event.name event.start event.end ] ++ formatEvents restOfTheList
+
+
 renderCreate : Model -> Html Msg
 renderCreate model =
-    div []
+    div [ class "paper-container" ]
         [ div []
-            [ div []
+            [ div [ (class "create-header") ]
                 [ h3 [] [ text "Book a meeting with " ]
                 , input
-                    [ placeholder "Example@email.com"
+                    [ placeholder "example@email.com"
                     , onInput NewMail
                     ]
                     []
                 ]
-            , div []
-                [ text "at "
+            , div [ (class "input-container") ]
+                [ h3 [] [ text "At which time?" ]
                 , renderDayOfTime model
                 ]
-            , div []
-                [ text "on a "
+            , div [ (class "input-container") ]
+                [ h3 [] [ text "On which days?" ]
                 , renderTimeOfWeek model.config
                 ]
-            , div []
-                [ text "in "
+            , div [ (class "input-container") ]
+                [ h3 [] [ text "How soon?" ]
                 , renderDateInterval model
                 ]
             , div []
                 [ text "Suggested dates: "
-                , text "ADD DATES HERE"
+                , ul [] (List.map createLi (formatEvents model.filteredEvents))
                 ]
-            , div []
+            , div [ (class "input-container") ]
                 [ button [] [ text "Send" ] ]
             ]
         ]
