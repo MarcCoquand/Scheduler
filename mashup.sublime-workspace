@@ -4,6 +4,38 @@
 		"selected_items":
 		[
 			[
+				"get",
+				"getAllPossibleTimes"
+			],
+			[
+				"se",
+				"second"
+			],
+			[
+				"ran",
+				"ranges"
+			],
+			[
+				"remo",
+				"removeOnLength"
+			],
+			[
+				"with",
+				"withDefault"
+			],
+			[
+				"rem",
+				"removeDoubles"
+			],
+			[
+				"con",
+				"concatMap"
+			],
+			[
+				"With",
+				"withinTimes"
+			],
+			[
 				"h",
 				"head"
 			],
@@ -22,10 +54,6 @@
 			[
 				"extract",
 				"extractTimes"
-			],
-			[
-				"remo",
-				"removeOrAdd"
 			],
 			[
 				"time",
@@ -58,10 +86,6 @@
 			[
 				"COn",
 				"Configuration"
-			],
-			[
-				"get",
-				"getStartTime"
 			],
 			[
 				"TimeOf",
@@ -118,10 +142,6 @@
 			[
 				"withI",
 				"WithinTime"
-			],
-			[
-				"with",
-				"withinTime"
 			],
 			[
 				"e",
@@ -444,10 +464,6 @@
 				"location"
 			],
 			[
-				"con",
-				"convertToCell"
-			],
-			[
 				"Proj",
 				"Project"
 			],
@@ -498,22 +514,6 @@
 			[
 				"Hiki",
 				"Hikokimori"
-			],
-			[
-				"bor",
-				"border-box"
-			],
-			[
-				"box",
-				"box-sizing"
-			],
-			[
-				"pro",
-				"ProjectView"
-			],
-			[
-				"N",
-				"Navigation"
 			]
 		]
 	},
@@ -532,7 +532,7 @@
 			"file": "src/App.elm",
 			"settings":
 			{
-				"buffer_size": 6821,
+				"buffer_size": 6868,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -541,7 +541,7 @@
 			"file": "src/Configuration.elm",
 			"settings":
 			{
-				"buffer_size": 3936,
+				"buffer_size": 6038,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -766,6 +766,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"getPossibleTimes",
 			"pickThree",
 			"getPoss",
 			"checkPossibleTimes",
@@ -897,7 +898,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -913,8 +914,8 @@
 						"selection":
 						[
 							[
-								1186,
-								1186
+								3583,
+								3586
 							]
 						],
 						"settings":
@@ -924,10 +925,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 751.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -936,15 +937,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6821,
+						"buffer_size": 6868,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3362,
-								3362
+								5291,
+								5291
 							]
 						],
 						"settings":
@@ -954,7 +955,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 987.0,
+						"translation.y": 4398.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
@@ -966,15 +967,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3936,
+						"buffer_size": 6038,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2522,
-								2522
+								3123,
+								3138
 							]
 						],
 						"settings":
@@ -984,10 +985,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1019.0,
+						"translation.y": 3221.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
@@ -1017,7 +1018,7 @@
 						"translation.y": 357.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 3,
 					"type": "text"
 				}
 			]
@@ -1064,7 +1065,7 @@
 	},
 	"output.find_results":
 	{
-		"height": 32.0
+		"height": 224.0
 	},
 	"pinned_build_system": "",
 	"project": "mashup.sublime-project",
@@ -1081,7 +1082,7 @@
 		[
 			[
 				"",
-				"public\\js\\script.js"
+				"src\\App.elm"
 			]
 		],
 		"width": 0.0

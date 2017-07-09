@@ -53,6 +53,16 @@ type TimeOfDay
 --Easier date construction
 
 
+quickTail : List a -> List a
+quickTail list =
+    case List.tail list of
+        Nothing ->
+            []
+
+        Just a ->
+            a
+
+
 day : Float
 day =
     (24 * Time.hour)
@@ -129,6 +139,90 @@ setTimeRange timeOfDay config =
         }
 
 
+setPossibleTimes : Config -> Config
+setPossibleTimes config =
+    { config
+        | possibleTimes = getAllPossibleTimes config.withinTimes config.length
+    }
+
+
+getAllPossibleTimes : List TimeOfDay -> Int -> List Int
+getAllPossibleTimes times length =
+    let
+        --creates a list of all possible startTimes
+        ranges =
+            removeDoubles <| List.sort <| List.concatMap (\tod -> List.range (getStartTime tod) (getEndTime tod)) times
+    in
+        ranges
+
+
+magic : List Int -> Int -> List Int
+magic list length =
+    case List.head list of
+        Nothing ->
+            []
+
+        Just start ->
+            if doesFit length list then
+                [ start ] ++ magic (quickTail list) length
+            else
+                magic (quickTail list) length
+
+
+doesFit : Int -> List Int -> Bool
+doesFit length list =
+    let
+        first =
+            List.head list
+
+        rest =
+            quickTail list
+
+        second =
+            List.head rest
+    in
+        if (length == 0) then
+            True
+        else
+            case first of
+                Nothing ->
+                    False
+
+                Just first ->
+                    case second of
+                        Nothing ->
+                            length == 1
+
+                        Just second ->
+                            if (second == first + 1) then
+                                doesFit (length - 1) rest
+                            else
+                                length == 1
+
+
+removeDoubles : List Int -> List Int
+removeDoubles list =
+    case List.head list of
+        Nothing ->
+            []
+
+        Just item ->
+            loopRemoveDoubles item list
+
+
+loopRemoveDoubles : Int -> List Int -> List Int
+loopRemoveDoubles item list =
+    case List.head list of
+        Nothing ->
+            []
+
+        Just newItem ->
+            if (item == newItem) then
+                loopRemoveDoubles newItem (quickTail list)
+            else
+                [ newItem ] ++ (quickTail list)
+
+
 getPossibleTimes : Int -> Int -> Int -> List Int
 getPossibleTimes start end length =
     if (start > end - length) then
@@ -160,9 +254,9 @@ remove item list =
 
         Just first ->
             if (first == item) then
-                Maybe.withDefault [] (List.tail list)
+                quickTail list
             else
-                [ first ] ++ (remove item <| Maybe.withDefault [] (List.tail list))
+                [ first ] ++ (remove item <| quickTail list)
 
 
 getStartTime : TimeOfDay -> Int

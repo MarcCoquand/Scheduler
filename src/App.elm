@@ -32,7 +32,7 @@ initConfig =
     { today = Date.fromTime 0
     , withinDates = OneWeek
     , withinTimes = [ Afternoon ]
-    , length = 3
+    , length = 8
     , possibleTimes = []
     , weekDays = True
     , weekEnds = False
@@ -55,7 +55,7 @@ init location =
         Nothing
         location
         initSendForm
-        initConfig
+        (Configuration.setPossibleTimes initConfig)
     , OAuth.init googleAuthClient location |> Cmd.map Token
     )
 
@@ -192,7 +192,7 @@ view model =
         Just token ->
             div []
                 [ h1 [] [ text "Quick meeting scheduler!" ]
-                , text <| toString model.config.withinTimes
+                , text <| "poss: " ++ toString model.config.possibleTimes
                 , div []
                     [ Create.renderCreate model ]
                 ]
