@@ -4,7 +4,231 @@
 		"selected_items":
 		[
 			[
-				"curr",
+				"get",
+				"getAllPossibleTimes"
+			],
+			[
+				"se",
+				"second"
+			],
+			[
+				"ran",
+				"ranges"
+			],
+			[
+				"remo",
+				"removeOnLength"
+			],
+			[
+				"with",
+				"withDefault"
+			],
+			[
+				"rem",
+				"removeDoubles"
+			],
+			[
+				"con",
+				"concatMap"
+			],
+			[
+				"With",
+				"withinTimes"
+			],
+			[
+				"h",
+				"head"
+			],
+			[
+				"to",
+				"toString"
+			],
+			[
+				"fr",
+				"freeDatesLoop"
+			],
+			[
+				"getOn",
+				"getOneAsList"
+			],
+			[
+				"extract",
+				"extractTimes"
+			],
+			[
+				"time",
+				"timeOfDayBox"
+			],
+			[
+				"Con",
+				"Configuration"
+			],
+			[
+				"wi",
+				"withinTimes"
+			],
+			[
+				"within",
+				"withinTimes"
+			],
+			[
+				"fil",
+				"filteredEvents"
+			],
+			[
+				"Show",
+				"ShowFreeDates"
+			],
+			[
+				"set",
+				"setToday"
+			],
+			[
+				"COn",
+				"Configuration"
+			],
+			[
+				"TimeOf",
+				"TimeOfDay"
+			],
+			[
+				"Time",
+				"TimeOfDay"
+			],
+			[
+				"from",
+				"fromTime"
+			],
+			[
+				"init",
+				"initConfig"
+			],
+			[
+				"end",
+				"endTime"
+			],
+			[
+				"start",
+				"startTime"
+			],
+			[
+				"ex",
+				"exposing"
+			],
+			[
+				"Config",
+				"Configuration"
+			],
+			[
+				"Confi",
+				"Configuration"
+			],
+			[
+				"CO",
+				"Configuration"
+			],
+			[
+				"Cus",
+				"CustomDate"
+			],
+			[
+				"One",
+				"OneYear"
+			],
+			[
+				"Two",
+				"TwoWeeks"
+			],
+			[
+				"withI",
+				"WithinTime"
+			],
+			[
+				"e",
+				"exposing"
+			],
+			[
+				"Wi",
+				"withinTime"
+			],
+			[
+				"tod",
+				"today"
+			],
+			[
+				"one",
+				"oneYearAgo"
+			],
+			[
+				"quick",
+				"quickTail"
+			],
+			[
+				"cal",
+				"Calendar"
+			],
+			[
+				"Get",
+				"GetEvents"
+			],
+			[
+				"combine",
+				"combineTwoCalenders"
+			],
+			[
+				"wih",
+				"withDefault"
+			],
+			[
+				"com",
+				"combineTwoCalenders"
+			],
+			[
+				"mes",
+				"message"
+			],
+			[
+				"not",
+				"notYetFetchedEvents"
+			],
+			[
+				"first",
+				"firstEvent"
+			],
+			[
+				"fir",
+				"firstEvent"
+			],
+			[
+				"sho",
+				"shortenListWithIndex"
+			],
+			[
+				"lo",
+				"lowestList"
+			],
+			[
+				"ind",
+				"indexOfLowestList"
+			],
+			[
+				"lowest",
+				"lowestIndex"
+			],
+			[
+				"sort",
+				"sortEvents"
+			],
+			[
+				"w",
+				"withoutHeads"
+			],
+			[
+				"whole",
+				"wholeDay"
+			],
+			[
+				"cur",
 				"currentDay"
 			],
 			[
@@ -12,8 +236,64 @@
 				"currentDay"
 			],
 			[
-				"end",
-				"endDate"
+				"isW",
+				"isWeekEnd"
+			],
+			[
+				"day",
+				"dayOfWeekAllowed"
+			],
+			[
+				"isWe",
+				"isWeekDay"
+			],
+			[
+				"week",
+				"weekdays"
+			],
+			[
+				"is",
+				"isWeekEnd"
+			],
+			[
+				"le",
+				"length"
+			],
+			[
+				"make",
+				"makeEvent"
+			],
+			[
+				"free",
+				"freeTimes"
+			],
+			[
+				"same",
+				"sameTime"
+			],
+			[
+				"current",
+				"currentDate"
+			],
+			[
+				"rest",
+				"restConfig"
+			],
+			[
+				"test",
+				"testConfig"
+			],
+			[
+				"hour",
+				"hourOfDay"
+			],
+			[
+				"curren",
+				"currentHour"
+			],
+			[
+				"curr",
+				"currentDay"
 			],
 			[
 				"fre",
@@ -24,36 +304,12 @@
 				"hoursToDays"
 			],
 			[
-				"hour",
-				"hoursToDays"
-			],
-			[
-				"test",
-				"testTime"
-			],
-			[
-				"rest",
-				"restOfEvents"
-			],
-			[
-				"day",
-				"dayAfter"
-			],
-			[
-				"free",
-				"freeDates"
-			],
-			[
 				"fi",
 				"filterOutThoseWithOutDates"
 			],
 			[
 				"extra",
 				"extractStartDate"
-			],
-			[
-				"make",
-				"makeEventsFromDateTuple"
 			],
 			[
 				"event",
@@ -64,20 +320,12 @@
 				"restOfEvents"
 			],
 			[
-				"cal",
-				"calendarCmd"
-			],
-			[
 				"O",
 				"OAuth"
 			],
 			[
 				"calen",
 				"calendarCmd"
-			],
-			[
-				"Get",
-				"GetCalendars"
 			],
 			[
 				"form",
@@ -98,10 +346,6 @@
 			[
 				"diff",
 				"diffMinutes"
-			],
-			[
-				"same",
-				"sameDay"
 			],
 			[
 				"sam",
@@ -136,20 +380,8 @@
 				"CalendarUser"
 			],
 			[
-				"start",
-				"startTimes"
-			],
-			[
 				"eve",
 				"events"
-			],
-			[
-				"e",
-				"events"
-			],
-			[
-				"Show",
-				"ShowEvents"
 			],
 			[
 				"find",
@@ -212,10 +444,6 @@
 				"divideStyle"
 			],
 			[
-				"get",
-				"getLast"
-			],
-			[
 				"in",
 				"interrupt"
 			],
@@ -234,10 +462,6 @@
 			[
 				"l",
 				"location"
-			],
-			[
-				"con",
-				"convertToCell"
 			],
 			[
 				"Proj",
@@ -260,20 +484,12 @@
 				"currentRoute"
 			],
 			[
-				"curren",
-				"currentLocation"
-			],
-			[
 				"par",
 				"parsedRoute"
 			],
 			[
 				"MyP",
 				"myProfile"
-			],
-			[
-				"cur",
-				"currentRoute"
 			],
 			[
 				"nav",
@@ -298,222 +514,6 @@
 			[
 				"Hiki",
 				"Hikokimori"
-			],
-			[
-				"bor",
-				"border-box"
-			],
-			[
-				"box",
-				"box-sizing"
-			],
-			[
-				"pro",
-				"ProjectView"
-			],
-			[
-				"N",
-				"Navigation"
-			],
-			[
-				"eee",
-				"experience"
-			],
-			[
-				"spo",
-				"sportswik"
-			],
-			[
-				"font-",
-				"font-size"
-			],
-			[
-				"paddin",
-				"padding-top"
-			],
-			[
-				"margin-",
-				"margin-top"
-			],
-			[
-				"fon",
-				"font-weight"
-			],
-			[
-				"dr",
-				"drawProjectText"
-			],
-			[
-				"draw",
-				"drawProject"
-			],
-			[
-				"init",
-				"initStyleProperties"
-			],
-			[
-				"ini",
-				"initStyleProperties"
-			],
-			[
-				"ex",
-				"expandedMainText"
-			],
-			[
-				"gone",
-				"goneMainText"
-			],
-			[
-				"pa",
-				"padding-right"
-			],
-			[
-				"font",
-				"font-size"
-			],
-			[
-				"Ani",
-				"Animation"
-			],
-			[
-				"sta",
-				"state"
-			],
-			[
-				"vie",
-				"ViewState"
-			],
-			[
-				"main",
-				"mainText"
-			],
-			[
-				"A",
-				"Animation"
-			],
-			[
-				"st",
-				"style"
-			],
-			[
-				"Anim",
-				"Animation"
-			],
-			[
-				"over",
-				"overflow-y"
-			],
-			[
-				"fa",
-				"faces"
-			],
-			[
-				"Proje",
-				"ProjectView"
-			],
-			[
-				"Pro",
-				"Project"
-			],
-			[
-				"voice",
-				"voiceLoader"
-			],
-			[
-				"ch",
-				"childText"
-			],
-			[
-				"p",
-				"projectText"
-			],
-			[
-				"pr",
-				"projectEmpty"
-			],
-			[
-				"emp",
-				"projectEmpty"
-			],
-			[
-				"chi",
-				"children"
-			],
-			[
-				"P",
-				"Project"
-			],
-			[
-				"fol",
-				"folderName"
-			],
-			[
-				"fac",
-				"facesChildren"
-			],
-			[
-				"c",
-				"children"
-			],
-			[
-				"Cel",
-				"CellMode"
-			],
-			[
-				"co",
-				"cover"
-			],
-			[
-				"fo",
-				"formatToProjectText"
-			],
-			[
-				"loa",
-				"loadImage"
-			],
-			[
-				"Emp",
-				"emptyCell"
-			],
-			[
-				"def",
-				"defImage2"
-			],
-			[
-				"fle",
-				"flex-start"
-			],
-			[
-				"ov",
-				"overflow-y"
-			],
-			[
-				"fold",
-				"folderName"
-			],
-			[
-				"ima",
-				"imageName"
-			],
-			[
-				"im",
-				"imageNames"
-			],
-			[
-				"hik",
-				"hikiImages"
-			],
-			[
-				"Ar",
-				"Array2D"
-			],
-			[
-				"wi",
-				"withDefault"
-			],
-			[
-				"from",
-				"fromList"
 			]
 		]
 	},
@@ -523,16 +523,8 @@
 			"file": "src/Dater.elm",
 			"settings":
 			{
-				"buffer_size": 5646,
-				"line_ending": "Unix",
-				"name": "module Dater exposing (..)"
-			}
-		},
-		{
-			"file": "src/Calendar.elm",
-			"settings":
-			{
-				"buffer_size": 5478,
+				"buffer_size": 10270,
+				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
@@ -540,7 +532,25 @@
 			"file": "src/App.elm",
 			"settings":
 			{
-				"buffer_size": 7080,
+				"buffer_size": 6868,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/Configuration.elm",
+			"settings":
+			{
+				"buffer_size": 6038,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/Create.elm",
+			"settings":
+			{
+				"buffer_size": 4232,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -607,11 +617,17 @@
 	],
 	"file_history":
 	[
+		"/D/Documents/GitHub/Scheduler/package.json",
+		"/D/Documents/GitHub/Scheduler/src/Create.elm",
+		"/D/Documents/GitHub/Scheduler/src/App.elm",
 		"/D/Documents/GitHub/Scheduler/src/Calendar.elm",
-		"/D/Documents/GitHub/Scheduler/elm-package.json",
+		"/D/Documents/GitHub/Scheduler/src/styles.scss",
+		"/D/Documents/GitHub/Scheduler/src/Configuration.elm",
 		"/D/Documents/GitHub/Scheduler/src/Model.elm",
-		"/D/Documents/GitHub/Scheduler/src/CalenderDecoder.elm",
+		"/D/Documents/GitHub/Scheduler/src/Dater.elm",
 		"/D/Documents/GitHub/Scheduler/src/Main.elm",
+		"/D/Documents/GitHub/Scheduler/elm-package.json",
+		"/D/Documents/GitHub/Scheduler/src/CalenderDecoder.elm",
 		"/D/Documents/GitHub/Scheduler/src/TestData.elm",
 		"/D/Documents/sites/elmProfile/src/elm/Main.elm",
 		"/D/Documents/GitHub/Scheduler/gulpfile.js",
@@ -728,23 +744,18 @@
 		"/D/Documents/sites/profile/imports/ui/admin/Registration",
 		"/D/Documents/sites/profile/imports/ui/admin/LoginPasswordForm.jsx",
 		"/D/Documents/sites/profile/imports/ui/AccountsUIWrapper.jsx",
-		"/D/Documents/sites/profile/imports/startup/accounts-config.js",
-		"/D/Documents/sites/resolutionsReact/imports/ui/App.jsx",
-		"/D/Documents/sites/profile/client/main.jsx",
-		"/D/Documents/sites/profile/.meteor/packages",
-		"/D/Documents/sites/profile/imports/ui/Quote.jsx",
-		"/D/Downloads/wood-987088.jpg",
-		"/D/Documents/sites/profile/imports/api/projects.js"
+		"/D/Documents/sites/profile/imports/startup/accounts-config.js"
 	],
 	"find":
 	{
-		"height": 36.0
+		"height": 38.0
 	},
 	"find_in_files":
 	{
 		"height": 90.0,
 		"where_history":
 		[
+			"D:\\Documents\\GitHub\\Scheduler\\src",
 			"D:\\Documents\\GitHub\\Scheduler",
 			"D:\\Documents\\GitHub\\chat\\chat-interview\\public\\js",
 			"main.styl"
@@ -752,9 +763,43 @@
 	},
 	"find_state":
 	{
-		"case_sensitive": true,
+		"case_sensitive": false,
 		"find_history":
 		[
+			"getPossibleTimes",
+			"pickThree",
+			"getPoss",
+			"checkPossibleTimes",
+			"isInList",
+			"whole",
+			"Event",
+			"\"hi\"",
+			"day",
+			"OneWeek",
+			"(..)",
+			"extractDate",
+			"currentDate",
+			"weekConfig",
+			"WithinTime",
+			"GetEvents",
+			"ShowEvents",
+			"findCalendars",
+			"ShowCalendars",
+			"events",
+			"wholeDay",
+			"query",
+			"loop",
+			"toFlo",
+			"sameDay",
+			"getPossibleTimes",
+			"possibleTimesAtDay",
+			"getPossibleTimes",
+			"possibleTimes",
+			"nineToFIve",
+			"diffMinutes",
+			"day",
+			"dayDate",
+			"day",
 			"ShowFreeDates",
 			"freeDates",
 			"sameDate",
@@ -830,6 +875,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"checkPossibleTimes",
 			"projectEmpty",
 			"",
 			".8rem",
@@ -846,13 +892,13 @@
 		"reverse": false,
 		"show_context": false,
 		"use_buffer2": false,
-		"whole_word": true,
+		"whole_word": false,
 		"wrap": true
 	},
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -861,46 +907,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5646,
+						"buffer_size": 10270,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5014,
-								5014
-							]
-						],
-						"settings":
-						{
-							"auto_name": "module Dater exposing (..)",
-							"syntax": "Packages/Elm Language Support/Syntaxes/Elm.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 3921.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "src/Calendar.elm",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5478,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5439,
-								5439
+								3583,
+								3586
 							]
 						],
 						"settings":
@@ -910,27 +925,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3344.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 1,
 					"file": "src/App.elm",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7080,
+						"buffer_size": 6868,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4311,
-								4311
+								5291,
+								5291
 							]
 						],
 						"settings":
@@ -940,10 +955,70 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3002.0,
+						"translation.y": 4398.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/Configuration.elm",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6038,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3123,
+								3138
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Elm Language Support/Syntaxes/Elm.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3221.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/Create.elm",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4232,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								992,
+								992
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Elm Language Support/Syntaxes/Elm.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 357.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
 					"type": "text"
 				}
 			]
@@ -951,7 +1026,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 28.0
+		"height": 30.0
 	},
 	"input":
 	{
@@ -990,13 +1065,13 @@
 	},
 	"output.find_results":
 	{
-		"height": 30.0
+		"height": 224.0
 	},
 	"pinned_build_system": "",
 	"project": "mashup.sublime-project",
 	"replace":
 	{
-		"height": 52.0
+		"height": 70.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1007,7 +1082,7 @@
 		[
 			[
 				"",
-				"public\\js\\script.js"
+				"src\\App.elm"
 			]
 		],
 		"width": 0.0
@@ -1046,7 +1121,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 205.0,
+	"side_bar_width": 236.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

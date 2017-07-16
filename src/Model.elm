@@ -5,24 +5,20 @@ import OAuth exposing (..)
 import Calendar exposing (..)
 import Http exposing (..)
 import Date exposing (..)
-import Dater exposing (..)
-import Time exposing (..)
+import Configuration exposing (..)
 
 
 type alias Model =
     { message : String
     , calendars : List ( String, String )
     , notYetFetchedEvents : List String --the ids
-    , events : List ( String, Calendar.Event )
-    , filteredEvents : List ( String, Calendar.Event )
+    , events : List ( String, Configuration.Event )
+    , filteredEvents : List ( String, Configuration.Event )
     , working : Bool
     , token : Maybe OAuth.Token
     , route : Location
     , sendform : SendForm
-    , timeconfig : List TimeOfDay
-    , weekconfig : List TimeOfWeek
-    , withindate : WithinTime
-    , currentDate : Date
+    , config : Configuration.Config
     }
 
 
@@ -33,42 +29,18 @@ type Msg
     | UrlChange Location
     | GetCalendars
     | ShowCalendars (List ( String, String ))
-    | ShowEvents (List ( String, Calendar.Event ))
+    | ShowEvents (List ( String, Configuration.Event ))
     | NewMail String
     | ToggleDayInterval TimeOfDay
-    | ToggleWeekInterval TimeOfWeek
-    | SwitchToDate WithinTime
-    | ShowFreeDates (List ( String, Event )) Dater.Config
+    | ToggleWeekInterval Configuration.Config
+    | SwitchToDate Configuration.WithinDates
+    | ShowFreeDates (List ( String, Event )) Configuration.Config
     | RequestCurrentTime
     | UpdateTime Date
 
 
 
 -- Interval during the day, example: 12:50 - 14:30
-
-
-type alias TimeInterval =
-    ( Time, Time )
-
-
-type WithinTime
-    = OneWeek
-    | TwoWeeks
-    | OneMonth
-    | CustomDate (Date, Date)
-
-
-type TimeOfWeek
-    = Weekday
-    | Weekend
-
-
-type TimeOfDay
-    = Morning
-    | Lunch
-    | Afternoon
-    | Evening
-    | CustomTime TimeInterval
 
 
 type alias SendForm =

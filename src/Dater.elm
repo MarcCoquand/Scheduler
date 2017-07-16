@@ -1,9 +1,9 @@
-module Dater exposing (formatAll, testConfig, freeDates, Config, EasyDate)
+module Dater exposing (formatAll, freeDates, EasyDate, oneYearAgo)
 
 import Date exposing (..)
 import Time exposing (..)
 import Maybe exposing (andThen)
-import Calendar exposing (Event)
+import Configuration exposing (..)
 
 
 --returns the difference between the two dates in minutes
@@ -19,37 +19,70 @@ type alias EasyDate =
     }
 
 
-type alias Config =
-    { currentDate : Date
-    , endDate : Date
-    , startTime : Int --hour
-    , endTime : Int --hour
-    , length : Int --hour
-    , possibleTimes :
-        List Int
-    , weekDays : Bool
-    , weekEnds : Bool
-    }
+pickThree : List ( String, Event ) -> List ( String, Event )
+pickThree list =
+    let
+        length =
+            List.length list
+
+        t =
+            Date.fromTime 0
+
+        msg =
+            toString length
+    in
+        takeEvery 0 (length // 3) list
+
+
+calculateLength : Int -> List a -> Int
+calculateLength index list =
+    case List.head list of
+        Nothing ->
+            index
+
+        Just a ->
+            case List.tail list of
+                Nothing ->
+                    index + 1
+
+                Just rest ->
+                    calculateLength (index + 1) rest
+
+
+takeEvery : Int -> Int -> List a -> List a
+takeEvery index nth list =
+    if (index >= nth - 1) then
+        case List.head list of
+            Nothing ->
+                []
+
+            Just first ->
+                case List.tail list of
+                    Nothing ->
+                        [ first ]
+
+                    Just rest ->
+                        [ first ] ++ takeEvery 0 nth rest
+    else
+        case List.tail list of
+            Nothing ->
+                []
+
+            Just rest ->
+                takeEvery (index + 1) nth rest
 
 
 
-{--The big one, filtering out dates where the user is occupied
-    TODO:
-        Check within a date, the user might be free in the morning
-            (refactor that part out as own function for simiplicity and clarity)
-        Extend config to reflect all user choices
-            ✓ startDate
-            ✓ endDate
-            ✓ weekends, weekdays
-            ✓ timeOfDay
-            ✓ length of meeting
-
-        Maybe make the algorithm lazy so we can handle if the user types in several years of potential work
---}
+--The big one, filtering out dates where the user is occupied
 
 
 freeDates : List ( String, Event ) -> Config -> List ( String, Event )
 freeDates events config =
+    pickThree <| freeDatesLoop events config
+
+
+freeDatesLoop : List ( String, Event ) -> Config -> List ( String, Event )
+freeDatesLoop events config =
     let
         first =
             List.head events
@@ -57,32 +90,30 @@ freeDates events config =
         rest =
             Maybe.withDefault [] (List.tail events)
 
-        currentDay =
-            config.currentDate
+        ( currentDay, endDay ) =
+            Configuration.extractDates config.today config.withinDates
 
         dayAfter =
-            { config | currentDate = (nextDay currentDay) }
+            { config | withinDates = CustomDate ( nextDay currentDay, endDay ) }
 
         dayOfWeekAllowed =
             (config.weekDays || isWeekEnd currentDay) && (config.weekEnds || isWeekDay currentDay)
     in
-        if (isOrder currentDay config.endDate) then
+        if (isOrder currentDay endDay) then
             if dayOfWeekAllowed then
                 case first of
                     Nothing ->
-                        [ wholeDay "free whole day" config ]
-                            ++ freeDates [] dayAfter
+                        (findFreeTimes events config) ++ freeDatesLoop events dayAfter
 
                     Just ( key, event ) ->
                         if (sameDay currentDay event.start) then
-                            (findFreeTimes events config) ++ freeDates events dayAfter
+                            (findFreeTimes events config) ++ freeDatesLoop events dayAfter
                         else if (isOrder currentDay event.start) then
-                            [ wholeDay "free whole day" config ]
-                                ++ freeDates events dayAfter
+                            (findFreeTimes events config) ++ freeDatesLoop events dayAfter
                         else
-                            freeDates rest config
+                            freeDatesLoop rest config
             else
-                freeDates events dayAfter
+                freeDatesLoop events dayAfter
         else
             []
 
@@ -90,8 +121,8 @@ freeDates events config =
 findFreeTimes : List ( String, Event ) -> Config -> List ( String, Event )
 findFreeTimes events config =
     let
-        day =
-            config.currentDate
+        ( day, _ ) =
+            Configuration.extractDates config.today config.withinDates
 
         possibleTimes =
             config.possibleTimes
@@ -202,14 +233,6 @@ getOnlyToday events =
                             [ ( key, event ) ]
 
 
-getPossibleTimes : Int -> Int -> Int -> List Int
-getPossibleTimes start end length =
-    if (start > end - length) then
-        []
-    else
-        [ start ] ++ getPossibleTimes (start + 1) end length
-
-
 
 --Formatting
 
@@ -295,34 +318,16 @@ week =
     (7 * day)
 
 
-
---test material
-
-
-testTime : Float
-testTime =
-    (47 * 52 * week) + (21 * week)
-
-
-testConfig : Config
-testConfig =
-    { currentDate = Date.fromTime testTime
-    , endDate =
-        Date.fromTime <|
-            testTime
-                + (2 * week + 5 * day)
-    , startTime = 8
-    , endTime = 17
-    , length = 2
-    , possibleTimes = getPossibleTimes 8 17 2
-    , weekDays = True
-    , weekEnds = False
-    }
-
-
 wholeDay : String -> Config -> ( String, Event )
 wholeDay name config =
-    meeting name config.currentDate config.startTime (config.endTime - config.startTime)
+    let
+        ( startDate, endDate ) =
+            Configuration.extractDates config.today <| config.withinDates
+
+        ( startTime, endTime ) =
+            Configuration.extractTimes config.withinTimes
+    in
+        meeting name startDate startTime (endTime - startTime)
 
 
 meeting : String -> Date -> Int -> Int -> ( String, Event )
@@ -338,7 +343,7 @@ meeting name date startHour length =
             setTimeAtDate date <| toFloat (startHour + length)
     in
         ( "noID"
-        , Calendar.Event name start end
+        , Configuration.Event name start end
         )
 
 
@@ -393,6 +398,11 @@ isWeekEnd date =
 isWeekDay : Date -> Bool
 isWeekDay date =
     not <| isWeekEnd date
+
+
+oneYearAgo : Date -> Date
+oneYearAgo date =
+    Date.fromTime <| Date.toTime date - 365 * day
 
 
 diffMinutes : Date -> Date -> Int

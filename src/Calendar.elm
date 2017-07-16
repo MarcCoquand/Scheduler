@@ -6,6 +6,7 @@ import Http
 import Json.Decode exposing (..)
 import Date exposing (..)
 import Json.Decode.Extra exposing (..)
+import Configuration exposing (Event)
 
 
 googleAuthClient : OAuth.Client
@@ -154,13 +155,6 @@ findEvents input =
                                         filterOutNothings <| List.map4 makeEvent ids names startTimes endTimes
 
 
-type alias Event =
-    { name : String
-    , start : Date
-    , end : Date
-    }
-
-
 filterOutNothings : List (Maybe a) -> List a
 filterOutNothings things =
     case List.head things of
@@ -242,3 +236,16 @@ combineTwoCalenders list1 list2 =
                             [ ( id1, event1 ) ] ++ combineTwoCalenders rest1 list2
                         else
                             [ ( id2, event2 ) ] ++ combineTwoCalenders list1 rest2
+
+
+future : Date -> List ( String, Event ) -> List ( String, Event )
+future currentDate events =
+    case List.head events of
+        Nothing ->
+            []
+
+        Just ( id, event ) ->
+            if (Date.toTime event.end < Date.toTime currentDate) then
+                future currentDate <| Maybe.withDefault [] (List.tail events)
+            else
+                events
