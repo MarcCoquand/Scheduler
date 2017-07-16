@@ -12,6 +12,7 @@ import List exposing (..)
 import Model exposing (..)
 import Html.Events exposing (onInput)
 import Date exposing (..)
+import Dater exposing (..)
 
 -- VIEW
 
@@ -68,6 +69,17 @@ renderDateInterval model =
                 <| CustomDate ((Date.fromTime 0), (Date.fromTime 0)))
         ]
     ]
+
+renderADate : Model -> EasyDate -> Html Msg
+renderADate model date = 
+    div [] 
+    [ text date.name
+    , text date.dateRange
+    ]
+
+renderSuggestedDates : Model -> List EasyDate -> Html Msg
+renderSuggestedDates model dateList = 
+    div [] (List.map (renderADate model) <| take 3 dateList)
 
 renderCreate : Model -> Html Msg
 renderCreate model =
